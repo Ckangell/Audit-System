@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!-- version: 2.2 | updated: 2026-05-08 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UX Audit Methodology</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>UX Audit Methodology</h1>
+    <div class="subtitle">How we verify design-to-development fidelity across the Kaplan component library</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This document defines the principles, phases, and scope of the Kaplan UX audit system — why it is structured the way it is and what each phase is designed to achieve. For step-by-step instructions on running a session, see the <a href="./designer-guide.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">Designer Guide →</a></p>
+    <p>This process moves design auditing from ad-hoc, eyeball-based checking to a repeatable, documented system. It creates a clear record of what was tested, what matched, and what didn't — which builds trust with development teams and makes design system conversations more concrete. Because parameters, selectors, and breakpoints are defined once and reused, each successive audit gets faster and more consistent. Over time, this creates a compounding return: less back-and-forth, fewer implementation errors, and a shared vocabulary between design and development that reduces misinterpretation at the source.</p>
+  </div>
+
+  <h2>The six phases</h2>
+
+  <div class="phase-list">
+    <div class="phase-list-item"><span class="phase-list-label">Phase 1</span> Establish the visual region map</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 2</span> Pull Figma values</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 3</span> Extract live site values</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 4</span> Visual inspection</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 5</span> Compare and document discrepancies</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 6</span> Annotation reference</div>
+  </div>
+
+  <h2>Audit Scope</h2>
+
+  <div class="scope-card">
+    <p class="scope-intro">This methodology applies to any combination of the following parameter categories. Each audit defines its scope upfront — not every category applies to every module or component.</p>
+
+    <h3>Current scope</h3>
+    <div class="scope-cols">
+      <div class="scope-col">
+        <p class="scope-cat">Typography</p>
+        <ul>
+          <li>Font family</li>
+          <li>Font size</li>
+          <li>Font weight</li>
+          <li>Line height</li>
+          <li>Letter spacing</li>
+          <li>Text transform</li>
+        </ul>
+      </div>
+      <div class="scope-col">
+        <p class="scope-cat">Spacing</p>
+        <ul>
+          <li>Padding</li>
+          <li>Margin</li>
+          <li>Gap (column and row)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Future scope</h3>
+    <div class="scope-cols">
+      <div class="scope-col">
+        <p class="scope-cat">Dimensions</p>
+        <ul>
+          <li>Min/max width</li>
+          <li>Min/max height</li>
+        </ul>
+        <p class="scope-cat">Visual Style</p>
+        <ul>
+          <li>Background color</li>
+          <li>Text color</li>
+          <li>Border</li>
+          <li>Border radius</li>
+        </ul>
+      </div>
+      <div class="scope-col">
+        <p class="scope-cat">Interactive States</p>
+        <ul>
+          <li>Hover</li>
+          <li>Focus</li>
+          <li>Active / pressed</li>
+          <li>Disabled</li>
+        </ul>
+        <p class="scope-cat">Layout Behavior</p>
+        <ul>
+          <li>Display property</li>
+          <li>Alignment</li>
+          <li>Text wrap behavior</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="note">Extraction patterns and tooling for future scope categories are not yet fully defined. The framework is designed to accommodate them as the methodology matures.</p>
+  </div>
+
+  <h2>Structural divergence and implementation deltas</h2>
+
+  <p>Figma and the live site frequently diverge in structure while converging visually — the same rendered result achieved through different organisation. This is expected and is not itself a problem. Understanding the common patterns of divergence is essential for accurate Phase 5 classification.</p>
+
+  <div class="scope-card">
+    <p class="scope-intro">Five categories of structural divergence appear across Kaplan's component library. All produce the same visual result; none require a fix.</p>
+
+    <h3>Spacing property substitution</h3>
+    <p>The same visual gap is produced by a different CSS property or on a different element. For example: Figma specifies <code>padding-left: 40px</code> on a section container; the live site achieves the same spacing via <code>padding-left: 16px</code> on the outer container and <code>padding-left: 24px</code> on an inner wrapper — 40px in aggregate.</p>
+
+    <h3>Layout mechanism substitution</h3>
+    <p>The same visual layout is produced by a different layout model. For example: Figma uses auto-layout with distributed spacing; the live site uses <code>flexbox</code> with <code>justify-content: space-between</code>.</p>
+
+    <h3>Structural nesting mismatch</h3>
+    <p>A Figma group boundary has no DOM equivalent, or vice versa. For example: Figma groups logo and tagline as one layer; the DOM renders them as two sibling elements with no shared parent. Or the DOM introduces a wrapper element carrying padding that has no counterpart in the Figma layer structure.</p>
+
+    <h3>Constraint or alignment mechanism</h3>
+    <p>Figma uses design constraints to express alignment; the live site uses a different CSS mechanism for the same result. For example: a Figma "stretch to fill" constraint maps to <code>width: 100%</code> on a child, or a Figma center alignment maps to <code>margin: 0 auto</code>.</p>
+
+    <h3>Value expression difference</h3>
+    <p>The same intended value is expressed differently in Figma versus CSS. For example: Figma specifies <code>line-height: 24px</code>; the live site uses <code>line-height: 1.5</code>, which resolves to 24px at the current font size. Or Figma specifies <code>letter-spacing: 0.5px</code>; the live site uses <code>letter-spacing: 0.03em</code>, which is equivalent at the current font size.</p>
+
+    <p class="note">Phase 1 structure notes are the early signal for these patterns. When a divergence is flagged in the section map, it primes Phase 5 to look for an implementation delta rather than treating the value difference as a straightforward discrepancy.</p>
+  </div>
+
+  <h2>Section naming convention</h2>
+
+  <p>Section names must be consistent across all phases of an audit — Phase 1 section map, Phase 5 comparison tables, and Phase 6 annotation references must all use the same label for the same region.</p>
+
+  <div class="rule-block">
+    <strong>Use Figma layer names where possible</strong>
+    <p>When a Figma layer name clearly describes the visual region, use it as the section name. This creates a direct connection between the audit output and the Figma file, making handoff conversations more precise. If a Figma layer name is ambiguous or overly technical, agree on a plain-language label with the designer before Phase 1 is confirmed — and record it in the session summary for reuse in future sessions on the same module.</p>
+  </div>
+
+  <h2>Audit Structure</h2>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Phase 1</p>
+    <p class="phase-title">Establish the visual region map</p>
+    <p>Before any values are measured, identify the module's visual regions — the distinct areas a designer would point to on screen and name. Regions are defined by what they <em>do</em> visually, not by how Figma or the DOM happens to organise them internally.</p>
+    <p>Claude identifies regions by reviewing the Figma frame and the live page together, then records how each tool represents the same region. This distinction matters: the Figma layer and the CSS selector are evidence of a region's boundary, not definitions of it. The two will not always align structurally, and that's expected.</p>
+    <p>The section map table captures all of this:</p>
+    <ul>
+      <li>Section name — the visual region label, agreed between designer and developer. Use Figma layer names where possible. Must be consistent across all subsequent phases.</li>
+      <li>Description — plain language: what does this region contain or do?</li>
+      <li>Figma layer — the layer or group in Figma that represents this region</li>
+      <li>CSS selector — the live DOM element Claude will target for extraction</li>
+      <li>Structure note — flag any divergence between how Figma and the DOM organise this region (e.g. "Figma groups logo and tagline as one layer; DOM separates into two sibling elements"). Reference the relevant divergence category from the Structural divergence taxonomy above.</li>
+    </ul>
+    <p>The Structure note column is not optional when divergence exists. It makes the mismatch visible rather than silently resolving it — and it provides the early signal that Phase 5 will use to classify a value difference as an implementation delta rather than a genuine discrepancy.</p>
+    <p>Immediately after presenting the table, Claude injects a highlight script into the live site via Chrome MCP. Each mapped section is outlined in a distinct color with a label directly on the page — no DevTools required. The highlights serve one specific purpose: confirming that the section map boundaries are correct before committing to them. Every subsequent phase depends on this mapping being right; the highlights are the only human-readable verification that it is. Claude does not attempt to capture screenshots at this or any other stage; visual review is always done by the designer directly in the browser.</p>
+    <p>After injection, Claude will ask whether you want to take a screenshot of the highlighted page before the highlights are removed. Take one if you want a record — this is the annotated view of the section boundaries and is useful for documentation and developer handoff. Once you are done, confirm to proceed. Claude will then ask for explicit confirmation to move to Phase 2.</p>
+    <p>Correct any incorrect mappings before confirming. This section map becomes the shared reference for the rest of the audit — all subsequent phases reference it by section name.</p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Phase 2</p>
+    <p class="phase-title">Pull Figma values</p>
+    <p>Using Figma MCP, extract values for every section identified in Phase 1. Use <code>get_screenshot</code> first to orient, then <code>get_design_context</code> for precise values. Record Figma values before touching the live site — Figma is always the source of truth for what is intended.</p>
+    <p>Key properties to capture per section at every defined breakpoint:</p>
+    <ul>
+      <li>Spacing: padding, margin, gap (column and row)</li>
+      <li>Typography: font family, size, weight, line height, letter spacing, text transform</li>
+    </ul>
+    <p>Where Figma distributes spacing across multiple frames or containers within a region, record each value individually and note the aggregate. This provides the Figma side of any implementation delta comparison in Phase 5.</p>
+    <p>Flag any properties with no Figma value before proceeding — these are gaps that need to be resolved before the audit can be considered complete.</p>
+    <p>Figma frames frequently contain placeholder text, dummy images, or color schemes that differ from the live site. Note these observations inline — e.g. "Hero section uses placeholder image" or "Background color in Figma differs from live" — but do not treat them as blockers. Continue extraction and briefly summarise any such observations at the end of Phase 2, offering to explore further if the designer wants to.</p>
+    <p><em>For audits that include future scope parameters, extraction patterns will be defined on a per-audit basis before Phase 2 begins.</em></p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Phase 3</p>
+    <p class="phase-title">Extract live site values</p>
+    <p>Using Chrome MCP, run a single comprehensive JavaScript extraction per breakpoint range rather than multiple targeted queries. The extraction should:</p>
+    <ul>
+      <li>Walk every element within the component</li>
+      <li>Report all non-zero spacing values</li>
+      <li>Capture typography on representative text elements in each section</li>
+    </ul>
+    <p>For each section, capture spacing values not only on the directly targeted element but on relevant ancestors and descendants within the region boundary. Spacing may be distributed across multiple DOM elements in the hierarchy — capturing the full hierarchy ensures Phase 5 has the data needed to compute aggregate values and make accurate implementation delta calls.</p>
+    <p>Within each breakpoint range, apply the following consistency assumptions as defaults — but treat them as defaults, not guarantees. No rule is without exceptions, and the audit brief Notes field is the place for a designer to flag known departures before the session begins.</p>
+    <ul>
+      <li><strong>Typography</strong> — assume consistent across the full range. Extract once at a representative width; do not re-extract at both ends unless flagged.</li>
+      <li><strong>Vertical spacing</strong> — row gaps, padding top/bottom, and component-to-component spacing — assume consistent across the range. Extract once.</li>
+      <li><strong>Internal column gaps</strong> — assume consistent across the range. Extract once.</li>
+      <li><strong>Horizontal edge spacing</strong> — left and right padding on outer containers — spot-check at both ends of the range. Fluid layout behavior can cause visible edge spacing to shift continuously across a range even when no breakpoint fires. If the brief flags a section as likely fluid, extract at both ends; otherwise extract at the midpoint and note the assumption.</li>
+    </ul>
+    <p>Desktop extraction must also account for the legacy breakpoint split — 992px–1729px and 1730px are separate ranges and must always be extracted independently. Do not assume continuity across this boundary for any property category. Cross-reference the element list against the section map to verify nothing has been missed. If an element appears in the DOM extraction but not in the section map, investigate before proceeding.</p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Phase 4</p>
+    <p class="phase-title">Visual inspection</p>
+    <p>Review the rendered module at each breakpoint before comparing values. Document anomalies that systematic extraction alone wouldn't surface — unexpected gaps, misalignment, or elements that feel spatially off. These observations feed directly into the annotation layer in Phase 6.</p>
+    <p>This step requires human judgment and cannot be automated. Claude does not capture screenshots — the designer reviews the live page directly in the browser and reports observations into the chat.</p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Phase 5</p>
+    <p class="phase-title">Compare and document discrepancies</p>
+    <p>Compare Figma values against live values section by section. Lead with a conclusion block before the full tables — a short, scannable summary of what passed, what failed, and what was classified as an implementation delta. The full tables follow as the corroborating record.</p>
+    <p>When a value difference is found, classify it before recording it:</p>
+    <ul>
+      <li><strong>Discrepancy</strong> — the aggregate visual result differs between Figma and the live site. Requires attention.</li>
+      <li><strong>Implementation delta</strong> — the intended spacing value is correct in aggregate, but distributed differently across the hierarchy on one or both sides. The visual result is the same; the structural path to that result differs. Does not require a fix.</li>
+    </ul>
+    <p>To determine whether a value difference is an implementation delta, sum spacing values across the relevant hierarchy on each side and compare the totals — do not compare individual property values in isolation. An implementation delta may exist when: the DOM distributes across multiple elements what Figma expresses as a single value; Figma distributes across multiple frames or containers what the DOM expresses as a single value; or both sides distribute differently but sum to the same total. Use Phase 1 structure notes as the primary signal — a flagged divergence pattern should prompt this additive check before classifying as a discrepancy.</p>
+    <p>The conclusion block leads the output and contains:</p>
+    <ul>
+      <li>A count of passed, failed, and implementation delta findings</li>
+      <li>A one-line summary per implementation delta — what differs, why it is considered equivalent</li>
+      <li>A one-line summary per genuine discrepancy — what differs and in which section</li>
+    </ul>
+    <p>The full comparison tables follow the conclusion block and are the canonical record. Output is organised into two independent top-level sections — Typography and Spacing — each structured the same way:</p>
+    <ul>
+      <li>One subsection per logical region (matching the Phase 1 section map)</li>
+      <li>Within each region, one table per breakpoint range</li>
+      <li>Each table shows all properties — Figma value, live value, and status (pass / fail / delta) — regardless of whether they match</li>
+    </ul>
+    <p>After presenting the full tables, Claude will ask whether you want a filtered view showing only failures and deltas — useful for focused review. Group findings by breakpoint range rather than individual breakpoint where values are consistent across the range.</p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Phase 6</p>
+    <p class="phase-title">Annotation reference</p>
+    <p>Claude generates two separate annotation references — one for Typography and one for Spacing — structured to match the Phase 5 comparison output. Each reference covers one section per frame and one breakpoint group per section, showing where discrepancies occur without replicating the full data from the comparison tables.</p>
+    <p>For module-level spacing (overall padding), use a simple pass/fail indicator per side rather than detailed annotations.</p>
+    <p>At the end of Phase 5, Claude will prompt: <em>"Ready for me to generate the annotation references for Typography and Spacing? You can paste these into Figma once they're ready."</em></p>
+
+    <div class="rule-block">
+      <strong>Annotation reference format</strong>
+      <p>Each finding is output as a self-contained structured text block, formatted for direct paste into a Figma annotation frame. One block per finding. Blocks are separated by a divider line (---). The annotation references are plain text only — no markdown formatting, no HTML, no inline CSS — so they paste cleanly into Figma without conversion.</p>
+      <p>Each block opens with a status symbol and classification on the first line, followed by the section name and breakpoint, then consistent labelled fields:</p>
+      <ul>
+        <li><strong>✕ FAIL</strong> — discrepancy, fix required. Include a Fix field.</li>
+        <li><strong>✓ DELTA</strong> — structural difference, visual result identical, no action needed. Include a Note field.</li>
+        <li><strong>⚠ DELTA</strong> — structural difference that may be fragile or worth a developer conversation. Include a Note field.</li>
+      </ul>
+      <p>Block structure for a fail:</p>
+      <pre>✕ FAIL — F[n]
+[Section name] · [Breakpoint]
+Property:  [property name]
+Figma:     [Figma value]
+Live:      [live value]
+Fix:       [recommended fix]</pre>
+      <p>Block structure for a delta:</p>
+      <pre>✓ DELTA — D[n]
+[Section name] · [Breakpoint]
+Property:  [property name]
+Figma:     [Figma value]
+Live:      [live value]
+Note:      [explanation — why this is considered equivalent]</pre>
+      <p>Section names in annotation blocks must match the Phase 1 section map exactly. Do not use alternative labels or shorthand.</p>
+    </div>
+  </div>
+
+  <div class="aux">
+    <div class="aux-card">
+      <h3>Verification</h3>
+      <p>Spot-check a sample of extracted values manually in browser DevTools before finalising. Cross-reference findings against any prior audit documentation where it exists. Build developer confirmation into the handoff — when a fix is applied, the developer confirms the before value matched what was documented.</p>
+    </div>
+    <div class="aux-card">
+      <h3>Reuse</h3>
+      <p>The logical structure map, extraction script, and discrepancy table format are all reusable across modules. Only the element selectors and Figma values change. Each new module audit starts by updating the structure map for that component.</p>
+    </div>
+  </div>
+
+  <h2>Known Challenges</h2>
+  <div class="challenge-list">
+    <div class="challenge">
+      <div class="challenge-icon">🔍</div>
+      <div class="challenge-text">
+        <strong>DOM complexity on the live site</strong>
+        Duplicate elements — such as mobile nav vs. hero panel link labels — require careful selector targeting to ensure the correct element is being measured and compared.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">📐</div>
+      <div class="challenge-text">
+        <strong>Legacy breakpoint split at 1729px / 1730px</strong>
+        A build artifact in the current codebase means desktop must be treated as two separate ranges: 992px–1729px and 1730px. Both must be extracted and compared independently — do not assume values are consistent across this boundary for any property category.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🖥️</div>
+      <div class="challenge-text">
+        <strong>Viewport width verification</strong>
+        Set the browser window or DevTools responsive mode to the exact target breakpoint width. Chrome does not consume viewport width — always confirm with <code>window.innerWidth</code> before extracting values. If it does not match the target, investigate before proceeding.
+      </div>
+    </div>
+  </div>
+
+  <h2>Work in Progress</h2>
+  <div class="challenge-list">
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Visual region map generation confirmed</strong>
+        Phase 1 tested against the Footer Module desktop breakpoint. Claude successfully identified visual regions from the Figma frame and live DOM, producing a complete section map with layer names, CSS selectors, and descriptions. The Footer is a structurally clean module — divergence flagging will be validated against a more complex module.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Section highlight injection confirmed</strong>
+        Claude injects a JavaScript highlight script via Chrome MCP at the end of Phase 1. Each mapped section is outlined in a distinct color with a label directly on the live page — tested on the Footer Module desktop breakpoint. This replaces the screenshot-based validation approach.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Brief form updated</strong>
+        Form now shows only Module Identity and Breakpoints, with a Notes field added. Section map, audit parameters, known complexities and open questions hidden — section map is generated by Claude in Phase 1.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Phase 6 annotation format defined</strong>
+        Structured text block format confirmed for Figma paste. One block per finding with consistent fields (Property / Figma / Live / Fix or Note). Status symbols: ✕ FAIL, ✓ DELTA, ⚠ DELTA. Plain text only — no formatting. Section names must match Phase 1 map exactly across all phases.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Section naming convention defined</strong>
+        Section names use Figma layer names where possible and must be consistent across Phase 1, Phase 5, and Phase 6. Canonical names agreed per module at Phase 1 confirmation and recorded in the session summary.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Implementation delta detection — to be tested further</strong>
+        The taxonomy, definition, and detection logic have been defined. Initial validation against Journey Module B confirmed the additive hierarchy check works. Further validation against more complex modules needed.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Figma isolated component screenshot — crop needs refinement</strong>
+        get_screenshot with contentsOnly renders the full footer frame rather than the isolated section. Need to identify correct child node IDs within the footer component to get tighter, section-level crops.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Future scope list — needs tightening</strong>
+        Consolidate future scope sub-items e.g. "Border" instead of listing width, color, and radius separately. Also revisit Current/Future scope layout — side-by-side, table, or other format.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Design Systems Audit Documentation</span>
+  <span class="tag">v2.2</span>
+</footer>
+
+</body>
+</html>

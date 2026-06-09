@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!-- version: 1.0 | updated: 2026-05-13 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary — May 13, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Session Summary</h1>
+    <div class="subtitle">May 13, 2026 — UX Audit Methodology</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This is a methodology and process session summary — it records what was changed, tested, and decided during a development session. It is not an audit handoff document. Do not use it to resume an audit. If you are resuming an audit, paste the plain-text audit handoff block generated at the end of your last audit conversation instead.</p>
+  </div>
+
+  <h2>Session Goals</h2>
+  <ul>
+    <li>Review an independent audit run by Charles and capture a finding from it</li>
+    <li>Discuss broader integration and scaling questions — agentic patterns, tool fragmentation, deploying the audit system to other designers</li>
+    <li>Address the selector registry maintenance problem and define a more sustainable approach</li>
+    <li>Update both skills to reflect the new approach</li>
+  </ul>
+
+  <h2>Files Updated This Session</h2>
+
+  <h3>kaplan-selector-registry SKILL.md — updated</h3>
+  <ul>
+    <li>Journey Module C border-radius note corrected — changed from "known fail" to pseudo-element delta requiring verification. The <code>border-top-left-radius: 60px</code> is implemented on the <code>::before</code> pseudo-element, not the element directly. Query with <code>getComputedStyle(element, '::before')</code> to confirm.</li>
+    <li>Opening section reframed — registry is now explicitly a reference cache, not a required source of truth. "Use confirmed entries when available. Derive confidently when not."</li>
+    <li>Growth pattern documented — registry grows naturally from non-obvious derivations surfaced during audits, not from systematic pre-population.</li>
+    <li>Adding New Entries section rewritten — hard-won knowledge framing applied. Clear criteria for what gets registered (pseudo-element discoveries, duplicate element resolutions, unfamiliar MUI nesting) versus what does not (routine selectors re-derivable from standard MUI patterns).</li>
+  </ul>
+
+  <h3>kaplan-audit-extraction SKILL.md — updated</h3>
+  <ul>
+    <li>New section added — MUI Selector Derivation Protocol. Five-step reasoning sequence for deriving selectors when a registry entry does not exist: (1) identify MUI component type, (2) apply known nesting patterns, (3) check pseudo-elements for visual styles, (4) use partial class matching on semantic suffixes, (5) state confidence level.</li>
+    <li>Pseudo-element check elevated to a required step for visual style properties — not an optional fallback. Specifically: if a visual property reads unexpectedly as <code>0px</code> or <code>none</code> on the direct element, always check <code>::before</code> and <code>::after</code> before classifying as a fail.</li>
+    <li>Confidence level classification added — "Confident" versus "Spot-check recommended." Derived selectors must be flagged with confidence level; spot-check cases must be explicit in the extraction output.</li>
+    <li>End of Session skill update check rewritten — shifts from "flag everything new" to "flag hard-won knowledge only." Routine selectors are not registered; real discoveries are.</li>
+  </ul>
+
+  <h2>Key Decisions and Findings</h2>
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Border-radius pseudo-element finding captured</strong> — in an independent audit of Journey Module C, the <code>border-top-left-radius: 60px</code> on Content Grid at tablet was initially classified as a fail because the direct element read <code>0px</code>. DevTools inspection confirmed the radius is implemented on the <code>::before</code> pseudo-element. This is likely a delta, not a fail. Corrected in the registry and elevated to a required extraction step in the derivation protocol.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Selector registry model redefined</strong> — pre-building a comprehensive registry is not sustainable as the module library expands. New model: Claude derives selectors from first principles using a documented protocol; the registry is a reference cache for non-obvious derivations only. No maintenance burden; no gaps that block an audit.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>MUI Selector Derivation Protocol defined and added to extraction skill</strong> — five-step reasoning sequence covers component type identification, nesting patterns, pseudo-element checks, partial class matching, and confidence classification. This is the mechanism that makes the registry optional rather than load-bearing.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Broader scaling discussion — key insight</strong> — Claude is already functioning as the central layer for the audit work (referencing Figma, extracting live site values, outputting notation back into Figma). The scaling question is not about adding new tools but about making the existing system deployable to other designers. The derivation protocol is a direct step toward that goal — designers do not need to understand MUI internals, only validate Claude's confidence-flagged output.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Forms audit — to be scoped next session</strong> — Charles is beginning a forms audit. Button states are a significant part of the scope. Forms introduce interactive states (rest, focus, filled, error, disabled), visual style properties (color, border), and animated label behavior — all of which expand beyond current methodology scope. Requires a scoping conversation before extraction approach can be designed.
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Current Project File Versions</h2>
+  <table>
+    <thead>
+      <tr><th>File</th><th>Version</th><th>Last updated</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>ux_audit_methodology.html</td><td>v2.2</td><td>2026-05-08</td></tr>
+      <tr><td>session-context.html</td><td>v2.0</td><td>2026-05-11</td></tr>
+      <tr><td>designer-guide.html</td><td>v1.5</td><td>2026-05-11</td></tr>
+      <tr><td>module-audit-brief-form.html</td><td>v1.3</td><td>2026-05-08</td></tr>
+      <tr><td>kaplan-audit-extraction SKILL.md</td><td>updated</td><td>2026-05-13</td></tr>
+      <tr><td>kaplan-selector-registry SKILL.md</td><td>updated</td><td>2026-05-13</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Open Items — Next Session</h2>
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Scope the forms audit</strong> — define what a forms audit covers: component types, states per component, properties per state. Determine whether this requires formally expanding methodology scope or runs as a parallel track. Button states are a priority starting point.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Observe correct breakpoint coverage pattern</strong> — complete all breakpoints within each phase before moving to the next phase. Carried from May 11.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Future scope list — needs tightening</strong> — consolidate future scope sub-items in the methodology doc. Carried from May 8.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Figma isolated screenshot crop</strong> — lower priority. Child node IDs needed for section-level crops. Carried from May 11.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Session Summary — May 13, 2026</span>
+  <span class="tag">v1.0</span>
+</footer>
+
+</body>
+</html>

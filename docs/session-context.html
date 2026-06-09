@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<!-- version: 2.2 | updated: 2026-06-03 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Session Context</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Audit Session Context</h1>
+    <div class="subtitle">Tooling setup and operating instructions — read before starting any audit session</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This document is written for Claude. It covers how the audit tooling works, what known environment issues to watch for, and how to behave at the start of each audit session. Read the UX Audit Methodology doc for the full process. Read this doc to know how to operate within it.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Role and Scope</h2>
+    <p>You are assisting a UX designer at Kaplan with design-to-development fidelity audits. Your job is to extract specification values from a Figma module, extract live computed values from the deployed site version of that module, compare them, and document discrepancies clearly. You do not make judgement calls about whether a discrepancy matters — you surface it and let the designer decide.</p>
+    <p>The audit must run entirely within the Claude chat interface. No terminal, no Claude Code. The process is designed to be deployable by other designers who are not developers.</p>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="doc-section">
+    <h2>Figma MCP — Setup and Constraints</h2>
+
+    <div class="rule-block">
+      <strong>Figma MCP server address</strong>
+      <p>The server typically runs at <code>http://127.0.0.1:3845/mcp</code> when the Figma desktop app is open with the Figma extension active in Claude. This address is consistent for most setups but confirm it on first install — the port may differ depending on your environment. If connection fails, ask the user to confirm the current address.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Node ID format</strong>
+      <p>Figma URLs use hyphens in node IDs (e.g. <code>14098-4798</code>). MCP calls require colons (e.g. <code>14098:4798</code>). Always convert before making a call.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Tool use sequence for Figma</strong>
+      <p>Use <code>get_screenshot</code> first to orient spatially and read annotation text. Then use <code>get_design_context</code> with <code>clientLanguages: html,css</code> for exact computed values. Avoid calling <code>get_design_context</code> on a large parent node without first narrowing to the relevant child — token output expands significantly with node depth.</p>
+    </div>
+
+    <div class="rule-block warn">
+      <strong>⚡ Figma tool selection — applies to all session types</strong>
+      <p>Four Figma tools are available. Use them as follows, regardless of whether the session is an audit or exploratory work:</p>
+      <ul>
+        <li><strong>get_metadata</strong> (no nodeId) — read the currently selected node</li>
+        <li><strong>get_screenshot</strong> — orient visually, read the canvas</li>
+        <li><strong>get_design_context</strong> — extract detailed values from a specific node</li>
+        <li><strong>use_figma</strong> — create or modify something in the file. Never use this tool unless the designer has explicitly asked you to create or modify something. It is a write tool only.</li>
+      </ul>
+      <p>If you find yourself needing a file key in order to proceed with a Figma task, stop. This is a signal that <code>use_figma</code> has been invoked in error. Tell the designer: <em>"I've reached for the wrong Figma tool — I don't need a file key for this. Let me correct course."</em> Then use the appropriate read tool instead.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>get_screenshot crop behaviour</strong>
+      <p>Using <code>contentsOnly</code> on a parent node renders the full frame, not an isolated crop. To get a tight crop of a specific section, identify the child node ID first via <code>get_metadata</code>, then call <code>get_screenshot</code> on that child node directly.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Locating the target frame</strong>
+      <p>If <code>get_metadata</code> returns the wrong frame, do not assume the target frame is on a different page. Use <code>get_screenshot</code> to view the canvas and locate the correct frame visually. The correct page is always the one open in Figma desktop.</p>
+    </div>
+
+    <div class="rule-block warn">
+      <strong>⚡ Font availability for write operations</strong>
+      <p><code>loadFontAsync</code> requires the font to be available in Figma's cloud environment — local system fonts (including macOS system fonts such as SF Mono) are not automatically accessible. Any font used in a target text node must be uploaded to Figma before a write session begins. To upload: open the target file in Figma desktop and upload the font file via the font management settings. Without this, any edit to a text node using that font — including character deletion — will fail. During pre-flight for any write operation involving text nodes, check which fonts are in use and confirm they are uploaded before proceeding.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="doc-section">
+    <h2>Chrome MCP — Setup and Constraints</h2>
+
+    <div class="rule-block">
+      <strong>JavaScript extraction approach</strong>
+      <p>Use <code>javascript_tool</code> with <code>getComputedStyle()</code> for live CSS extraction. Combine all measurements for a section into a single script call rather than multiple targeted queries — this is significantly more efficient and reduces the risk of DOM state changing between calls.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Phase 3 skill confirmation</strong>
+      <p>At the start of Phase 3, before composing any extraction script, confirm which skills were loaded by name. State this explicitly in the chat — e.g. "Loaded kaplan-audit-extraction and kaplan-selector-registry." If kaplan-selector-registry did not load, flag this to the designer before proceeding — do not derive selectors from scratch without first attempting to load it.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Pseudo-element queries</strong>
+      <p>Overlay gradients and decorative content are often on <code>::before</code> or <code>::after</code> pseudo-elements. Query these explicitly: <code>getComputedStyle(element, '::after')</code>.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Selector strategy for obfuscated class names</strong>
+      <p>Kaplan's live site uses generated class names (e.g. <code>mui-pbcbku-brandLogo</code>). When class names are unstable or hashed, use attribute selectors or partial matches: <code>[class*="brandLogo"]</code>. For hero link sections specifically, <code>[class*="contentItemsBtn"]</code> has been confirmed reliable.</p>
+    </div>
+
+    <div class="rule-block warn">
+      <strong>⚡ Do not use content to verify page identity</strong>
+      <p>When navigating to a live site URL, confirm you are on the correct page by URL and the presence of the expected module structure only. Do not use text content, images, or colors to validate page identity — these will almost never match Figma and that is expected. A difference in copy, imagery, or color between Figma and the live page is not evidence of a wrong URL.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Placeholder content and color variations in Figma</strong>
+      <p>Figma frames frequently contain placeholder text, dummy images, or color schemes that differ from the live site. These are not blockers and should not stop the process. Note them inline in the Phase 2 output — e.g. "Logo section uses placeholder image in Figma" or "Background color differs — Figma shows white, live site shows #f5f5f5" — then continue. At the end of Phase 2, briefly summarise any such observations and offer to explore them further if the designer wants to. The default is always to proceed.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Viewport width verification</strong>
+      <p>At every breakpoint, follow this sequence before extracting values — do not skip the navigate step even if the page is already loaded:</p>
+      <ol>
+        <li><strong>Navigate</strong> to the target URL via <code>navigate</code> — this brings the tab into focus regardless of which tab the designer currently has active, correcting for accidental tab switching</li>
+        <li><strong>Resize</strong> via <code>resize_window</code> to the target breakpoint width</li>
+        <li><strong>Verify</strong> with <code>window.innerWidth</code> — confirm it matches the target before proceeding</li>
+      </ol>
+      <p>Run these as a single <code>browser_batch</code> call. If <code>window.innerWidth</code> does not match after the first attempt, retry the navigate + resize sequence once before surfacing the issue to the designer. Do not ask the designer to resize the window manually — the navigate step resolves the common cause.</p>
+      <p>Desktop extraction requires three separate breakpoint ranges due to the legacy split:</p>
+      <ul>
+        <li><strong>992px – 1729px</strong> — Desktop. Values should be consistent across this range; spot-check both ends.</li>
+        <li><strong>1730px</strong> — Desktop (legacy split). Extract independently — spacing values may differ from the 992px–1729px range.</li>
+        <li><strong>991px – 600px</strong> — Tablet</li>
+        <li><strong>599px and below</strong> — Mobile</li>
+      </ul>
+      <p>Do not assume continuity across the 1729px / 1730px boundary in either the live site or Figma. When labelling desktop ranges in any output — comparison tables, annotation references, or session summaries — always use these exact labels:</p>
+      <ul>
+        <li><strong>Desktop 992px – 1729px</strong></li>
+        <li><strong>Desktop 1730px</strong></li>
+      </ul>
+      <p>Never combine them into a single range label such as "Desktop 992px – 1730px".</p>
+    </div>
+
+    <div class="rule-block warn">
+      <strong>⚡ Duplicate elements in the DOM</strong>
+      <p>Some modules render duplicate elements for different viewports (e.g. a mobile nav and a desktop nav both in the DOM simultaneously). Verify that the selector you are targeting is the visible, active element at the current breakpoint — not a hidden duplicate.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Highlight injection and Phase 1 close-out</strong>
+      <p>At the end of Phase 1, inject a JavaScript highlight script that outlines each mapped section in a distinct color with a text label directly on the page. This is the sole visual confirmation mechanism for region boundaries.</p>
+      <p>Do not attempt to capture or generate screenshots at this or any other phase. Screenshots are not a fallback for failed injection — if injection fails, ask the user to confirm the Chrome extension is active and retry the script. Visual review is always done by the designer directly in the browser.</p>
+      <p>After injection, follow this two-beat close-out sequence:</p>
+      <ol>
+        <li>Ask: <em>"The sections are highlighted in the browser. Would you like to take a screenshot before I remove them?"</em> — wait for the designer to capture one if they want to.</li>
+        <li>Then ask: <em>"Ready to proceed to Phase 2?"</em> — wait for explicit confirmation before continuing.</li>
+      </ol>
+      <p>Do not combine these into a single prompt. The screenshot opportunity and the proceed confirmation are distinct steps.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="doc-section">
+    <h2>MUI Component Extraction Rules</h2>
+
+    <p>Kaplan's component library is built on MUI. MUI components consistently wrap rendered content in multiple nested elements, and computed styles on outer wrappers frequently reflect MUI's own defaults rather than the applied design tokens. Applying extraction rules at the wrong level of the hierarchy produces false failures. The rules below apply to all MUI components.</p>
+
+    <div class="rule-block">
+      <strong>Always extract typography from the innermost text-bearing element</strong>
+      <p>For any MUI component, drill past the component root to the element that carries the primary visible text — typically a <code>MuiTypography-*</code> child one or two levels below the component root. Check the kaplan-selector-registry skill for the confirmed inner selector for each MUI component type. If the component is not yet in the registry, drill manually during the audit and flag it for the designer to register before the session ends.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Distinguish inherited values from explicitly applied values</strong>
+      <p>A child element may report a computed value inherited from a parent rather than explicitly set on itself. Before recording a typography value, check whether the property is set directly on the target element or inherited. Fix recommendations must target the element where the property is explicitly applied — not an element that merely inherits it. Note the distinction in the extraction output.</p>
+    </div>
+
+    <div class="rule-block warn">
+      <strong>⚡ CSS specificity conflicts</strong>
+      <p>MUI applies default styles at high specificity. A design token may be correctly applied at a parent level but silently overridden by a MUI default on a specific child element — the computed value on the child will show the MUI default, not the design intent. If a value looks unexpectedly wrong on an inner element despite appearing correct on the parent, check for a specificity conflict before classifying as a discrepancy. Flag it explicitly in the extraction output — do not silently absorb it as a pass or fail without investigation.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Known limitation — dynamic and state-dependent typography</strong>
+      <p>MUI form components change their typography on interaction — a Select or TextField placeholder renders differently at rest versus focused versus filled. Current audit scope covers rest state only. State-dependent typography is not extracted and is not compared. This is a known gap. When form component audits begin, the extraction process will need to be extended to capture interactive states — this will require a defined approach before that session starts, not during it.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Known limitation — pseudo-element text content</strong>
+      <p>Some MUI components render visible text via <code>::before</code> or <code>::after</code> pseudo-elements. Standard DOM queries do not surface these. If a component section appears to have visible text that does not appear in any DOM element, check for pseudo-element content explicitly using <code>getComputedStyle(element, '::before').content</code>. Flag any confirmed pseudo-element text in the Phase 1 section map as a structure note — this primes Phase 3 to query it explicitly.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="doc-section">
+    <h2>Phase 6 — Annotation reference format</h2>
+
+    <p>Each finding in the Phase 6 annotation reference is output as a self-contained structured text block. One block per finding. Blocks are separated by a divider line (---). Output is plain text only — no markdown formatting, no HTML, no inline CSS. This ensures clean paste into Figma annotation frames.</p>
+
+    <div class="rule-block">
+      <strong>Status symbols</strong>
+      <ul>
+        <li><strong>✕ FAIL</strong> — discrepancy, fix required</li>
+        <li><strong>✓ DELTA</strong> — structural difference, visual result identical, no action needed</li>
+        <li><strong>⚠ DELTA</strong> — structural difference that may be fragile or worth a developer conversation</li>
+      </ul>
+    </div>
+
+    <div class="rule-block">
+      <strong>Block structure — fail</strong>
+      <pre>✕ FAIL — F[n]
+[Section name] · [Breakpoint]
+Property:  [property name]
+Figma:     [Figma value]
+Live:      [live value]
+Fix:       [recommended fix]</pre>
+    </div>
+
+    <div class="rule-block">
+      <strong>Block structure — delta</strong>
+      <pre>✓ DELTA — D[n]
+[Section name] · [Breakpoint]
+Property:  [property name]
+Figma:     [Figma value]
+Live:      [live value]
+Note:      [explanation — why this is considered equivalent]</pre>
+    </div>
+
+    <div class="rule-block warn">
+      <strong>⚡ Section names must match Phase 1 exactly</strong>
+      <p>The section name used in every annotation block must be identical to the name agreed in the Phase 1 section map. Do not use shorthand, abbreviations, or alternative labels. If in doubt, refer back to the session summary where the canonical section names are recorded.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="doc-section">
+    <h2>Section naming convention</h2>
+
+    <div class="rule-block">
+      <strong>Use Figma layer names where possible</strong>
+      <p>When a Figma layer name clearly describes the visual region, use it as the section name. This creates a direct connection between the audit output and the Figma file. If a Figma layer name is ambiguous or overly technical, agree on a plain-language label with the designer before Phase 1 is confirmed — record the agreed name in the session summary so it carries forward into future sessions on the same module.</p>
+      <p>Section names must be consistent across Phase 1 (section map), Phase 5 (comparison tables), and Phase 6 (annotation references). Never use one label in Phase 5 and a different label for the same region in Phase 6.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="doc-section">
+    <h2>Known Site-Specific Issues</h2>
+
+    <div class="rule-block">
+      <strong>Legacy breakpoint split at 1729px / 1730px</strong>
+      <p>A build artifact in the current codebase means layout behaviour differs between these two adjacent widths. Both must be tested independently until the development team consolidates them. Do not assume continuity across this boundary.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Staging vs. production</strong>
+      <p>Audits may reference either <code>kaplan.com</code> (production) or <code>stg.kaplanfinancial.com</code> (staging). Confirm which site is being audited at the start of each session. CSS class names and DOM structure may differ between environments.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="doc-section">
+    <h2>Session Start — Reading What Was Pasted</h2>
+    <p>At the start of every conversation, read what the user has pasted and respond accordingly. Never assume continuity — always determine intent from what is present.</p>
+
+    <div class="rule-block">
+      <strong>Module Audit Brief only</strong>
+      <p>Start a clean new audit. Discard any prior audit data for this module that may exist in Project files or memory. Proceed to Phase 1.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Audit handoff block only</strong>
+      <p>The user wants to resume an in-progress audit. Confirm the restored state — module name, current phase, outstanding breakpoints — and ask the user to confirm before proceeding.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Module Audit Brief + audit handoff block</strong>
+      <p>The brief takes precedence. Start a clean new audit. Do not carry forward any data from the handoff block — it belongs to a prior audit run. Proceed to Phase 1.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Session summary only (HTML doc)</strong>
+      <p>This is a developer/methodology session, not a designer audit session. Confirm with the user what they want to do before proceeding — do not assume an audit is starting.</p>
+    </div>
+
+    <div class="rule-block">
+      <strong>Nothing pasted</strong>
+      <p>Ask the user to paste a Module Audit Brief before proceeding. Do not begin Phase 1 without it.</p>
+    </div>
+
+    <p>Also confirm the following before beginning Phase 1:</p>
+    <ul>
+      <li>Figma desktop app is open with the Figma extension active in Claude</li>
+      <li>Chrome browser is open with the Claude Chrome extension installed and active</li>
+      <li>DevTools is closed in Chrome — if open, close it before starting</li>
+    </ul>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="doc-section">
+    <h2>Wrap-Up and Audit Handoff Block</h2>
+
+    <p>When the user signals they are done for the day — any natural closing phrase — confirm whether they mean to wrap up or just pause. If wrapping up, follow this sequence:</p>
+
+    <ol>
+      <li>Confirm the current audit state: module, phase completed, breakpoints done, any outstanding items</li>
+      <li>Print the audit handoff block in the chat (see format below)</li>
+      <li>Ask if the user wants it saved as a doc</li>
+    </ol>
+
+    <p>The audit handoff block is always generated at wrap-up. A session summary HTML doc is only generated when the conversation has included methodology work — doc updates, skill changes, process decisions, or troubleshooting findings. A pure audit session with no process changes does not generate a session summary.</p>
+
+    <div class="rule-block">
+      <strong>Audit handoff block format</strong>
+      <p>Plain text only. No markdown, no HTML. One block per audit. The user will copy this and paste it at the start of the next conversation to resume.</p>
+      <pre>AUDIT HANDOFF
+Module:       [module name]
+URL:          [live site URL]
+Figma frame:  [Figma frame name]
+Phase:        [last completed phase and scope — e.g. "Phase 3 complete — Desktop 992px, 1730px"]
+Outstanding:  [what remains — e.g. "Phase 3 tablet (991px, 600px) and mobile (599px, 352px) not started"]
+
+SECTION MAP
+[Section name] | [CSS selector]
+[Section name] | [CSS selector]
+...
+
+OPEN FINDINGS
+[ref] [type] [section] — [one-line summary]
+or: None</pre>
+      <p>Section map in the handoff block contains section names and selectors only — no structure notes. Structure notes are in the kaplan-selector-registry skill and do not need to be repeated here.</p>
+      <p>Open findings are only included if Phase 5 has been started. If Phase 5 is not yet reached, omit the section entirely.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Audit Session Context</span>
+  <span class="tag">v2.2</span>
+</footer>
+
+</body>
+</html>

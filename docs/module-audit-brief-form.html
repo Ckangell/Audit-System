@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!-- version: 1.2 | updated: 2026-05-04 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module Audit Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Module Audit Brief</h1>
+    <div class="subtitle">A per-module working document for Figma-to-live-site audits</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="brief-section">
+    <h2>Module Identity</h2>
+    <div class="field-row"><label>Module name</label><input type="text" id="mod-name" placeholder="e.g. Footer Module"></div>
+    <div class="field-row"><label>Figma frame name</label><input type="text" id="figma-name" placeholder="e.g. Footer Module — Full Module Desktop"></div>
+    <div class="field-row"><label>Live site URL</label><input type="text" id="live-url" placeholder="e.g. https://kaplan.com"></div>
+    <div class="field-row"><label>Audit date</label><input type="text" id="audit-date" placeholder="e.g. April 2026"></div>
+  </div>
+
+  <div class="brief-section">
+    <h2>Breakpoints</h2>
+    <p style="font-style: italic; font-size: 14px; margin-bottom: 12px;">* Desktop is treated as two separate ranges due to a legacy build artifact. Enter 992px as the start of the standard desktop range (992–1729px). Claude will test at both ends.</p>
+    <table class="bp-table">
+      <thead>
+        <tr><th>Breakpoint</th><th>Label</th><th>Notes</th></tr>
+      </thead>
+      <tbody id="bp-rows">
+        <tr><td><input type="text" value="1730px"></td><td>Desktop (legacy split)</td><td><input type="text" placeholder="Test independently — spacing may differ from 992–1729 range"></td></tr>
+        <tr><td><input type="text" value="992px"></td><td>Desktop</td><td><input type="text" placeholder="Values should be consistent 992–1729px"></td></tr>
+        <tr><td><input type="text" value="991px"></td><td>Tablet</td><td><input type="text" placeholder="notes"></td></tr>
+        <tr><td><input type="text" value="600px"></td><td>Tablet</td><td><input type="text" placeholder="notes"></td></tr>
+        <tr><td><input type="text" value="599px"></td><td>Mobile</td><td><input type="text" placeholder="notes"></td></tr>
+        <tr><td><input type="text" value="352px"></td><td>Mobile</td><td><input type="text" placeholder="notes"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="brief-section" style="display:none;">
+    <h2>Section Map</h2>
+    <table class="section-table">
+      <thead>
+        <tr><th>Section name</th><th>Figma layer</th><th>CSS selector</th><th></th></tr>
+      </thead>
+      <tbody id="section-rows">
+        <tr><td><input type="text" placeholder="e.g. Logo"></td><td><input type="text" placeholder="Figma layer name"></td><td><input type="text" placeholder=".class or selector"></td><td><button class="btn-sm btn-remove" onclick="removeRow(this)">×</button></td></tr>
+        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-sm btn-remove" onclick="removeRow(this)">×</button></td></tr>
+        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-sm btn-remove" onclick="removeRow(this)">×</button></td></tr>
+        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-sm btn-remove" onclick="removeRow(this)">×</button></td></tr>
+        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-sm btn-remove" onclick="removeRow(this)">×</button></td></tr>
+      </tbody>
+    </table>
+    <div class="btn-row"><button class="btn-sm" onclick="addSectionRow()">+ add section</button></div>
+  </div>
+
+  <div class="brief-section" style="display:none;">
+    <h2>Audit Parameters</h2>
+    <div class="param-grid">
+      <div class="param-group">
+        <p>Spacing</p>
+        <label><input type="checkbox" checked> Module outer padding</label>
+        <label><input type="checkbox" checked> Column gap</label>
+        <label><input type="checkbox" checked> Row gap</label>
+        <label><input type="checkbox" checked> Section padding top</label>
+        <label><input type="checkbox" checked> Section padding bottom</label>
+        <label><input type="checkbox" checked> Item spacing</label>
+      </div>
+      <div class="param-group">
+        <p>Typography</p>
+        <label><input type="checkbox" checked> Font size</label>
+        <label><input type="checkbox" checked> Font weight</label>
+        <label><input type="checkbox" checked> Line height</label>
+        <label><input type="checkbox" checked> Letter spacing</label>
+        <label><input type="checkbox" checked> Text transform</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="brief-section" style="display:none;">
+    <h2>Known Complexities</h2>
+    <textarea id="complexities" placeholder="Spec gaps, suspected discrepancies, implementation quirks known before the audit starts..."></textarea>
+  </div>
+
+  <div class="brief-section" style="display:none;">
+    <h2>Open Questions</h2>
+    <textarea id="open-questions" placeholder="Questions to resolve during the audit..."></textarea>
+  </div>
+
+  <div class="brief-section">
+    <h2>Notes</h2>
+    <textarea id="notes" placeholder="Anything Claude should know before starting Phase 1 — known DOM complexity, selector ambiguity, which breakpoint to start with, staging vs production differences, etc."></textarea>
+  </div>
+
+  <div class="copy-area">
+    <button class="btn-copy" onclick="copyBrief()">Copy brief to clipboard</button>
+    <div class="copy-confirm" id="copy-msg"></div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Module Audit Brief</span>
+  <span class="tag">v1.2</span>
+</footer>
+
+<script>
+  function addSectionRow() {
+    const tbody = document.getElementById('section-rows');
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-sm btn-remove" onclick="removeRow(this)">×</button></td>';
+    tbody.appendChild(tr);
+  }
+
+  function removeRow(btn) {
+    btn.closest('tr').remove();
+  }
+
+  function copyBrief() {
+    const v = id => document.getElementById(id).value.trim();
+    let out = [];
+
+    out.push('MODULE AUDIT BRIEF');
+    out.push('==================');
+    out.push('');
+
+    out.push('MODULE IDENTITY');
+    out.push('Module name:   ' + (v('mod-name') || '—'));
+    out.push('Figma frame:   ' + (v('figma-name') || '—'));
+    out.push('Live site URL: ' + (v('live-url') || '—'));
+    out.push('Audit date:    ' + (v('audit-date') || '—'));
+    out.push('');
+
+    out.push('BREAKPOINTS');
+    document.querySelectorAll('#bp-rows tr').forEach(row => {
+      const inputs = row.querySelectorAll('input[type="text"]');
+      const label = row.cells[1].textContent.trim();
+      const bp = inputs[0].value.trim();
+      const notes = inputs[1].value.trim();
+      if (bp) out.push(bp + ' (' + label + ')' + (notes ? ' — ' + notes : ''));
+    });
+
+    const notes = v('notes');
+    if (notes) {
+      out.push('');
+      out.push('NOTES');
+      out.push(notes);
+    }
+
+    out.push('');
+    out.push('---');
+    out.push('Section map to be generated by Claude in Phase 1.');
+
+    navigator.clipboard.writeText(out.join('\n')).then(() => {
+      document.getElementById('copy-msg').textContent = 'Copied to clipboard';
+      setTimeout(() => document.getElementById('copy-msg').textContent = '', 2500);
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!-- version: 1.5 | updated: 2026-05-11 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designer Guide — Audit Sessions</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Designer Guide</h1>
+    <div class="subtitle">How to start, run, and end an audit session</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This guide covers the practicalities of running an audit session — how to set up, what to do at each stage, how to hand off between conversations, and what to do when something goes wrong. For the full audit process, see the UX Audit Methodology doc. For Claude's tooling instructions, see the Audit Session Context doc.</p>
+  </div>
+
+  <h2>The six phases</h2>
+
+  <p>An audit runs in six phases — region mapping, Figma extraction, live site extraction, visual inspection, comparison, and annotation. Claude leads each phase; you review and confirm at each gate before it proceeds.</p>
+
+  <div class="phase-list">
+    <div class="phase-list-item"><span class="phase-list-label">Phase 1</span> Establish the visual region map</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 2</span> Pull Figma values</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 3</span> Extract live site values</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 4</span> Visual inspection</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 5</span> Compare and document discrepancies</div>
+    <div class="phase-list-item"><span class="phase-list-label">Phase 6</span> Annotation reference</div>
+  </div>
+
+  <h2>Before You Start</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Open a chat in the Claude Project</strong> — not a standalone Claude chat. The Project carries the methodology docs so Claude knows what to do. A standalone chat will not have the right context.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Open Figma desktop</strong> with the Figma extension active in Claude. The extension must be running — Claude uses it to read the Figma file directly.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Open Chrome</strong> with the Claude in Chrome extension active. Claude uses this to inspect and interact with the live site. <strong>Close DevTools before starting</strong> — having DevTools open can interfere with Claude's browser interactions.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Fill out the Module Audit Brief</strong> — module name, Figma frame name, live site URL, breakpoints, and any notes about known complexity. Use the Copy button to copy it to your clipboard. <a href="./module-audit-brief-form.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">Open the brief form →</a></div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-text"><strong>Paste the brief into the chat</strong> to kick off Phase 1. Claude will take it from there.</div>
+    </div>
+  </div>
+
+  <div class="scope-card">
+    <p class="scope-intro"><strong>Resuming an audit mid-way?</strong> — paste your audit handoff block first, before anything else. See <a href="#resuming" style="color: #5c4bff; text-decoration: none; font-weight: 600;">Starting a new chat / resuming</a> below.</p>
+  </div>
+
+  <h2>Running a Session</h2>
+
+  <p>Claude leads the audit phase by phase. Your job is to review what Claude produces at each gate and confirm before it proceeds. You do not need to use browser DevTools or the terminal — everything runs in the chat.</p>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">At each phase gate</p>
+    <p class="phase-title">Review, then confirm explicitly</p>
+    <p>Claude will present its output at the end of each phase and wait. Read it, check it, and tell Claude to proceed when you're ready. If something looks wrong, say so — Claude will correct and re-present before moving on.</p>
+    <p>The most important gate is after Phase 1. Claude will inject colored highlights onto the live page so you can visually confirm the section boundaries are correct. Claude will then ask two questions in sequence — first whether you want to take a screenshot of the highlighted page before the highlights are removed, then whether you are ready to proceed to Phase 2. These are separate prompts; answer each one before moving on.</p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">If you lose track</p>
+    <p class="phase-title">Ask Claude where you are</p>
+    <p>At any point you can ask: <em>"What phase are we on and what's been confirmed?"</em> Claude will summarise the current state before continuing.</p>
+  </div>
+
+  <h2>Ending a Session</h2>
+
+  <p>When you're done for the day, let Claude know — something like "I'm done for now" or "let's stop here." Claude will take it from there.</p>
+
+  <div class="rule-block">
+    <strong>What happens at wrap-up</strong>
+    <p>When you signal you're finished, Claude will:</p>
+    <ul style="margin-top: 12px;">
+      <li>Confirm what phase the audit is at and what has been completed</li>
+      <li>Print an audit handoff block in the chat — a short plain-text summary of the audit state</li>
+      <li>Ask if you want it saved as a doc</li>
+    </ul>
+    <p style="margin-top: 12px;"><strong>Copy the audit handoff block and keep it somewhere you can find it</strong> — a notes app, a doc, wherever works for you. You will paste it at the start of the next conversation to resume the audit. Without it, Claude will not know where you left off.</p>
+  </div>
+
+  <div class="rule-block warn">
+    <strong>⚡ Ambiguous closings</strong>
+    <p>If it is not clear whether you are wrapping up or just taking a break, Claude will ask. If you mean to finish for the day, say so explicitly so the handoff block gets generated before you close the chat.</p>
+  </div>
+
+  <h2 id="resuming">Starting a New Chat / Resuming</h2>
+
+  <div class="rule-block">
+    <strong>The audit handoff block is for Claude, not for you</strong>
+    <p>The handoff block Claude prints at the end of a conversation is not a record for you to read — it is a plain-text state snapshot for Claude to read at the start of the next conversation. It tells Claude which module, which phase, which breakpoints are done, and what the section map looks like. Without it, Claude has the methodology docs but not your audit state.</p>
+    <p>Keep it somewhere accessible — a notes app, a doc, wherever works. You will paste it at the start of the next conversation.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Open a new chat in the Claude Project</strong> — same Project, new conversation.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Paste the audit handoff block</strong> — the plain-text block from the end of your last conversation. Do this before anything else. Claude will confirm the restored state before proceeding.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Confirm and continue</strong> — Claude will tell you where you are and what comes next. Confirm, and the audit resumes from where you left off.</div>
+    </div>
+  </div>
+
+  <h2>When to Start a New Chat</h2>
+
+  <p>Start a new chat in the Project when any of the following apply:</p>
+
+  <div class="challenge-list">
+    <div class="challenge">
+      <div class="challenge-icon">↩</div>
+      <div class="challenge-text">The current session has gotten long and Claude's responses feel less precise or less consistent — this is a sign the context window is filling up</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">↩</div>
+      <div class="challenge-text">You are switching to a different module — each module gets its own session thread</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">↩</div>
+      <div class="challenge-text">Something has gone wrong and you want a clean slate — make sure to wrap up properly first so your audit handoff block is generated before you close the chat</div>
+    </div>
+  </div>
+
+  <h2>When Something Goes Wrong</h2>
+
+  <div class="challenge-list">
+    <div class="challenge">
+      <div class="challenge-icon">🔍</div>
+      <div class="challenge-text">
+        <strong>Claude loses track of the section map</strong> — paste the audit handoff block again. Claude will re-read it and reorient.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔍</div>
+      <div class="challenge-text">
+        <strong>Highlight injection fails</strong> — ask Claude to retry the injection script. If it continues to fail, confirm the Chrome extension is active and the correct tab is open.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔍</div>
+      <div class="challenge-text">
+        <strong>Figma connection drops</strong> — ask Claude to re-confirm the MCP connection. Make sure the Figma desktop app is open and the extension is active.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔍</div>
+      <div class="challenge-text">
+        <strong>Chrome extraction returns unexpected values</strong> — ask Claude to verify the selector and re-run. Claude will check whether the target element is the visible one at the current breakpoint.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔍</div>
+      <div class="challenge-text">
+        <strong>Viewport width doesn't match the target breakpoint</strong> — Claude will re-navigate to the page and retry the resize automatically. You do not need to manually resize the window. If the issue persists after a retry, Claude will flag it.
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔍</div>
+      <div class="challenge-text">
+        <strong>You're not sure where you are</strong> — ask: <em>"What phase are we on and what's been confirmed?"</em> Claude will summarise before continuing.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Designer Guide</span>
+  <span class="tag">v1.5</span>
+</footer>
+
+</body>
+</html>

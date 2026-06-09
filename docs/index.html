@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!-- version: 1.0 | updated: 2026-06-08 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaplan UX Audit System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Audit System</h1>
+    <div class="subtitle">Methodology, tools, and session history for design-to-development fidelity audits</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>The Kaplan UX audit system verifies that built modules match their Figma specifications. This page is the entry point — designers running audits start at the top; system documentation sits in the middle; session history is at the bottom.</p>
+  </div>
+
+  <h2>Start an audit</h2>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">For designers</p>
+    <p class="phase-title"><a href="./designer-guide.html" style="color: #240F6E; text-decoration: none;">Designer Guide →</a></p>
+    <p>Step-by-step instructions for running an audit session — how to start, what to do at each phase gate, how to hand off between conversations, and what to do when something goes wrong.</p>
+  </div>
+
+  <div class="phase" id="brief-form">
+    <div class="dot"></div>
+    <p class="phase-label">Per-audit setup</p>
+    <p class="phase-title"><a href="./module-audit-brief-form.html" style="color: #240F6E; text-decoration: none;">Module Audit Brief →</a></p>
+    <p>Fill out the brief before starting a new audit. Captures module name, Figma frame, live URL, breakpoints, and any notes Claude needs before Phase 1. Copy the result to your clipboard and paste it into the chat to kick off.</p>
+  </div>
+
+  <h2>Reference</h2>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Current state</p>
+    <p class="phase-title"><a href="./audit-system-status.html" style="color: #240F6E; text-decoration: none;">Audit System Status →</a></p>
+    <p>One-page synthesis — evolution, current status, and what's upcoming. The doc to open first if you want a fast read on where things stand.</p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Conceptual map</p>
+    <p class="phase-title"><a href="./system-overview.html" style="color: #240F6E; text-decoration: none;">System Overview →</a></p>
+    <p>The four-layer model of the audit system — methodology, operational rules, audit sessions, and the maintenance loop. Explains what lives where and how findings flow between layers.</p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Audit process</p>
+    <p class="phase-title"><a href="./ux-audit-methodology.html" style="color: #240F6E; text-decoration: none;">UX Audit Methodology →</a></p>
+    <p>The six-phase audit process — section mapping, Figma extraction, live site extraction, visual inspection, comparison, annotation. Covers scope, the implementation delta taxonomy, and structural divergence patterns.</p>
+  </div>
+
+  <div class="phase">
+    <div class="dot"></div>
+    <p class="phase-label">Tooling and operating rules</p>
+    <p class="phase-title"><a href="./session-context.html" style="color: #240F6E; text-decoration: none;">Audit Session Context →</a></p>
+    <p>Written for Claude. Figma and Chrome MCP setup, MUI extraction rules, viewport sequencing, session start protocols, and the audit handoff block format.</p>
+  </div>
+
+  <h2>Session history</h2>
+
+  <div class="value-block">
+    <p>Session summaries record what changed, was tested, and was decided during methodology and audit sessions. Not audit handoff documents — those are plain-text blocks kept locally by the designer.</p>
+    <p><a href="./sessions/" style="color: #5c4bff; text-decoration: none; font-weight: 600;">Browse all session summaries →</a></p>
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Audit System</span>
+  <span class="tag">v1.0</span>
+</footer>
+
+</body>
+</html>

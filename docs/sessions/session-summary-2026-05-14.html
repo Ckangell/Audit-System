@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!-- version: 1.0 | updated: 2026-05-14 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary — May 14, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Session Summary</h1>
+    <div class="subtitle">May 14, 2026 — Journey Module A Audit + Methodology</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This is a methodology and process session summary — it records what was changed, tested, and decided during a development session. It is not an audit handoff document. Do not use it to resume an audit. If you are resuming an audit, paste the plain-text audit handoff block generated at the end of your last audit conversation instead.</p>
+  </div>
+
+  <h2>Session Goals</h2>
+  <ul>
+    <li>Run a full Phases 1–6 audit of Journey Module A across all breakpoints</li>
+    <li>Identify and document all discrepancies and implementation deltas</li>
+    <li>Investigate and address missed findings surfaced during Phase 5 review</li>
+    <li>Update both skills to prevent the same misses in future sessions</li>
+  </ul>
+
+  <h2>Audit Completed This Session</h2>
+
+  <p>Journey Module A — full audit Phases 1–6, all breakpoints. Audit handoff block generated and held by the designer. Findings summary below; full comparison tables and annotation references were generated in-session.</p>
+
+  <h3>Key findings</h3>
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">✕</div>
+      <div class="challenge-text">
+        <strong>F1 — Body copy font size at mobile (14px live vs 16px Figma)</strong> — description elements inside all cards switch from <code>MuiTypography-body1</code> at desktop/tablet to <code>MuiTypography-body2</code> at mobile 599px, producing 14px instead of the specified 16px. Applies to both Featured Card and Standard Cards. Tablet and desktop pass.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✕</div>
+      <div class="challenge-text">
+        <strong>F2 — Featured Card overflow at mobile (8px visible clearance vs 32px Figma)</strong> — the featured card overflows the right viewport edge by 24px at 599px. The Figma spec uses <code>overflow-clip</code> on the Milestone Section to contain the card within the viewport, giving 32px of visible right padding. The live site does not clip, reducing visible text clearance to 8px.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✕</div>
+      <div class="challenge-text">
+        <strong>F3 — Standard Card count at mobile (2 live vs 3 Figma)</strong> — the Figma spec shows 3 standard cards at mobile breakpoints. The live site renders 2 at all breakpoints including mobile. Requires investigation with the development team.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✓</div>
+      <div class="challenge-text">
+        <strong>9 implementation deltas confirmed</strong> — spacing distributed across MuiContainer responsive padding, mainGrid hierarchy, headline negative margin compensation, and subGrid padding redistribution at mobile. All verified as structural differences with equivalent visual results.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✓</div>
+      <div class="challenge-text">
+        <strong>All typography passes at desktop and tablet</strong> — font family, size, weight, line height, and letter spacing match Figma across all sections and both desktop/tablet ranges.
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Files Updated This Session</h2>
+
+  <h3>kaplan-audit-extraction SKILL.md — updated</h3>
+  <ul>
+    <li><code>typography()</code> function updated — now captures <code>muiVariant</code> field on every extracted element, surfacing the MUI variant class name (e.g. <code>MuiTypography-body1</code>, <code>MuiTypography-body2</code>) alongside computed values. Variant changes across breakpoints are now visible in raw extraction output.</li>
+    <li>New section added — <strong>Mandatory Verification Checkpoints Before Phase 5</strong>. Two explicit rules:</li>
+    <li style="margin-left: 20px;"><strong>MUI variant class consistency</strong> — after extracting typography at all breakpoints, compare the <code>muiVariant</code> field across the full range. Any change in variant is a mandatory investigation checkpoint before Phase 5 classification.</li>
+    <li style="margin-left: 20px;"><strong>Overflow and containment at mobile</strong> — before classifying any mobile boundary finding as a delta, verify whether the Figma parent container specifies <code>overflow-clip</code> or <code>overflow-hidden</code>. If the Figma spec clips, the live site must also clip. Calculate visible clearance explicitly and compare against Figma intent.</li>
+  </ul>
+
+  <h3>kaplan-selector-registry SKILL.md — updated</h3>
+  <ul>
+    <li>Journey Module A entry added — all six section selectors confirmed against the staging URL, May 2026.</li>
+    <li>Structure notes included — page-wide scoping requirement for Standard Card and Main Grid selectors, activeContainer pattern for Featured Card, body2 variant switch at mobile, and Featured Card overflow fail with containment explanation.</li>
+  </ul>
+
+  <h2>Key Decisions and Findings</h2>
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Root cause identified — body copy miss</strong> — the extraction script was not logging the MUI variant class, only the computed font size. At mobile the variant silently changed from <code>body1</code> to <code>body2</code>; the computed value returned 16px from a slightly different element in the hierarchy rather than the true 14px. Fix: typography function now captures and outputs the MUI variant class at every element, making variant changes impossible to miss.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Root cause identified — Featured Card overflow miss</strong> — the 8px visible clearance was correctly calculated but classified as a delta rather than a fail. The error was not returning to Figma to verify whether the parent container clips. The <code>overflow-clip</code> on the Figma Milestone Section was present in the design context output from Phase 2 but was not checked at Phase 5 classification. Fix: new mandatory checkpoint requires Figma overflow/containment verification before any mobile boundary finding is classified.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Broader pattern identified</strong> — both misses shared the same root: extraction data appeared plausible so Phase 5 classification proceeded without returning to Figma to verify the intent. The fix is structural: mandatory checkpoints that require Figma verification for specific classes of finding (variant changes, boundary overflow) before classification, not after a designer flags them.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Journey Module A selector scoping confirmed</strong> — several selectors match multiple elements page-wide and must always be scoped within <code>section[class*="journey"]</code>. Most critical: <code>a[class*="MuiButton-root"]</code> matches 18 elements page-wide; scoped within journey it returns exactly 2. Documented in registry.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>352px breakpoint cannot be extracted in this environment</strong> — browser minimum window width prevents resize below 500px. Values at 500px matched 599px exactly across all properties, confirming the mobile range is consistent. Documented in audit handoff block as a known environment constraint.
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Current Project File Versions</h2>
+  <table>
+    <thead>
+      <tr><th>File</th><th>Version</th><th>Last updated</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>ux_audit_methodology.html</td><td>v2.2</td><td>2026-05-08</td></tr>
+      <tr><td>session-context.html</td><td>v2.0</td><td>2026-05-11</td></tr>
+      <tr><td>designer-guide.html</td><td>v1.5</td><td>2026-05-11</td></tr>
+      <tr><td>module-audit-brief-form.html</td><td>v1.3</td><td>2026-05-08</td></tr>
+      <tr><td>kaplan-audit-extraction SKILL.md</td><td>updated</td><td>2026-05-14</td></tr>
+      <tr><td>kaplan-selector-registry SKILL.md</td><td>updated</td><td>2026-05-14</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Open Items — Next Session</h2>
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Scope the forms audit</strong> — define what a forms audit covers: component types, states per component, properties per state. Button states are a priority starting point. Carried from May 13.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Observe correct breakpoint coverage pattern</strong> — complete all breakpoints within each phase before moving to the next phase. Carried from May 11.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Future scope list — needs tightening</strong> — consolidate future scope sub-items in the methodology doc. Carried from May 8.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Figma isolated screenshot crop</strong> — lower priority. Child node IDs needed for section-level crops. Carried from May 11.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>352px extraction environment constraint</strong> — browser minimum window width prevents extraction below 500px. Consider whether DevTools responsive mode via Chrome MCP could bypass this constraint for future mobile audits requiring the smallest breakpoint.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Session Summary — May 14, 2026</span>
+  <span class="tag">v1.0</span>
+</footer>
+
+</body>
+</html>

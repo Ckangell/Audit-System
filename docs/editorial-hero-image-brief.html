@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<!-- version: 1.2 | updated: 2026-06-03 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editorial Hero — Image Sizing Findings &amp; Creative Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+<style>
+  .safe-zone-diagram {
+    background: #1a1060;
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+    margin: 24px 0;
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 3/2;
+  }
+  .sz-image-area {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #2a1f80 0%, #3d2fa0 40%, #1a1060 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sz-safe-zone {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    top: 20%;
+    bottom: 20%;
+    border: 2px dashed rgba(255,255,255,0.7);
+    border-radius: 4px;
+  }
+  .sz-safe-label {
+    position: absolute;
+    top: -22px;
+    left: 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .sz-crop-desktop {
+    position: absolute;
+    left: 0; right: 0;
+    top: 30%; bottom: 43%;
+    background: rgba(255, 200, 0, 0.18);
+    border-top: 2px solid rgba(255,200,0,0.8);
+    border-bottom: 2px solid rgba(255,200,0,0.8);
+  }
+  .sz-crop-mobile {
+    position: absolute;
+    left: 10%; right: 10%;
+    top: 22%; bottom: 35%;
+    background: rgba(100, 220, 255, 0.12);
+    border: 2px solid rgba(100,220,255,0.7);
+    border-radius: 2px;
+  }
+  .sz-crop-label {
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .sz-crop-label.desktop { color: rgba(255,200,0,0.95); }
+  .sz-crop-label.mobile { color: rgba(100,220,255,0.95); }
+  .sz-focal {
+    position: absolute;
+    left: 50%; top: 42%;
+    transform: translate(-50%, -50%);
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: rgba(255,255,255,0.3);
+  }
+  .sz-focal::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%,-50%);
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: white;
+  }
+  .sz-dim-label {
+    position: absolute;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.04em;
+  }
+  .sz-dim-label.top { top: 6px; left: 50%; transform: translateX(-50%); }
+  .sz-dim-label.left { left: 6px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
+
+  .inventory-table td:first-child { font-family: monospace; font-size: 13px; }
+  .inventory-table td.flag-warn { color: #9E1539; font-weight: 600; }
+  .inventory-table td.flag-ok { color: #287D21; font-weight: 600; }
+
+  .crop-table td { font-size: 13px; }
+  .crop-table td.problem { color: #9E1539; }
+  .crop-table td.ok { color: #287D21; }
+
+  .spec-box {
+    background: #240F6E;
+    color: white;
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+  .spec-box h3 {
+    color: white;
+    font-family: 'Merriweather', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 20px;
+    border: none;
+    padding: 0;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .spec-box .spec-row {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .spec-box .spec-row:last-child { border-bottom: none; }
+  .spec-box .spec-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6);
+    min-width: 110px;
+    flex-shrink: 0;
+  }
+  .spec-box .spec-value {
+    font-size: 15px;
+    color: white;
+    line-height: 1.5;
+  }
+  .spec-box .spec-value strong {
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Editorial Hero — Image Sizing</h1>
+    <div class="subtitle">Findings from the Figma and live site review · June 2, 2026</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This document summarises how the Editorial Hero component sizes and crops images across breakpoints, what the current live site is doing, why the existing image library is inconsistent, and what to specify when briefing creative for new images.</p>
+  </div>
+
+  <h2>How the component crops images</h2>
+
+  <p>The Editorial Hero image area has a <strong>fixed height at every breakpoint</strong> — it does not scale with the image's natural proportions. Width, however, stretches with the viewport. This means the component is always showing a horizontal slice of the source image, and that slice gets proportionally wider (and therefore more cropped) as the viewport grows.</p>
+
+  <table class="crop-table">
+    <thead>
+      <tr>
+        <th>Breakpoint</th>
+        <th>Image container</th>
+        <th>Effective crop ratio</th>
+        <th>% of 3:2 source height shown</th>
+        <th>Crop axis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Desktop 1730px</td>
+        <td>1154 × 352px</td>
+        <td class="problem">3.28:1 — very wide, shallow band</td>
+        <td class="problem">26% of source</td>
+        <td>Width-constrained — image scales to fill width, top/bottom crop</td>
+      </tr>
+      <tr>
+        <td>Desktop 1280px</td>
+        <td>854 × 352px</td>
+        <td class="problem">2.43:1</td>
+        <td class="problem">26%</td>
+        <td>Width-constrained — image scales to fill width, top/bottom crop</td>
+      </tr>
+      <tr>
+        <td>Desktop 992px</td>
+        <td>662 × 352px</td>
+        <td class="problem">1.88:1</td>
+        <td class="problem">26%</td>
+        <td>Width-constrained — image scales to fill width, top/bottom crop</td>
+      </tr>
+      <tr>
+        <td>Tablet 991px</td>
+        <td>911 × 352px</td>
+        <td class="problem">2.59:1</td>
+        <td class="problem">26%</td>
+        <td>Width-constrained — image scales to fill width, top/bottom crop</td>
+      </tr>
+      <tr>
+        <td>Tablet 600px</td>
+        <td>520 × 341px</td>
+        <td class="ok">1.52:1 — closest to 3:2</td>
+        <td class="ok">26%</td>
+        <td>Height-constrained — image scales to fill height, sides crop. More horizontal content lost than at any other breakpoint.</td>
+      </tr>
+      <tr>
+        <td>Mobile 599px</td>
+        <td>575 × 232px</td>
+        <td class="problem">2.48:1</td>
+        <td class="problem">17% of source</td>
+        <td>Width-constrained — image scales to fill width, top/bottom crop</td>
+      </tr>
+      <tr>
+        <td>Mobile 352px</td>
+        <td>328 × 232px</td>
+        <td class="problem">1.41:1</td>
+        <td class="problem">17% of source</td>
+        <td>Height-constrained — image scales to fill height, sides crop</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 16px;">The component uses <code>background-size: cover</code> (live site) or <code>object-fit: cover</code> (Figma spec) — both work identically: scale the image until it fills the container completely, cropping whatever overflows. The <strong>focal point</strong> set in the CMS controls where the crop is anchored within the image.</p>
+
+  <h2>The focal point system</h2>
+
+  <p>The CMS focal point tool takes a single point set by the content admin and applies it across all three breakpoints simultaneously. The point translates to a CSS position value — horizontal and vertical — that shifts the crop window left/right and up/down relative to the source image.</p>
+
+  <div class="rule-block">
+    <strong>What the focal point can and cannot do</strong>
+    <p>The focal point can move the crop window to keep the subject in frame. It cannot change how much of the image is visible — that is determined by the ratio of the container dimensions to the source image dimensions. At desktop, only about 26% of the source image height is shown regardless of where the focal point is set. The focal point just determines which 26%.</p>
+  </div>
+
+  <div class="rule-block warn">
+    <strong>⚡ One focal point serves all breakpoints</strong>
+    <p>A focal point optimised for desktop may shift the crop unfavourably at mobile, and vice versa. Because the container shape changes significantly between breakpoints — wide and shallow at desktop, more compact at mobile — the same focal point produces a different crop at each size. Images where the subject is centered will survive this better than images where the subject is pushed to an edge or extreme top/bottom of the frame.</p>
+  </div>
+
+  <h2>Why the existing image library is inconsistent</h2>
+
+  <p>A sample of images currently in use on Editorial Hero posts shows significant variation in both size and ratio:</p>
+
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>Dimensions found</th>
+        <th>Ratio</th>
+        <th>Assessment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2000 × 1333px</td>
+        <td>3:2</td>
+        <td class="flag-ok">✓ Correct size and ratio</td>
+      </tr>
+      <tr>
+        <td>2000 × 1334px</td>
+        <td>~3:2</td>
+        <td class="flag-ok">✓ Correct size and ratio (1px rounding)</td>
+      </tr>
+      <tr>
+        <td>800 × 533px</td>
+        <td>3:2</td>
+        <td class="flag-warn">⚠ Right ratio, undersized — will upscale at desktop</td>
+      </tr>
+      <tr>
+        <td>853 × 480px</td>
+        <td>~16:9</td>
+        <td class="flag-warn">⚠ Wrong ratio, undersized</td>
+      </tr>
+      <tr>
+        <td>800 × 450px</td>
+        <td>16:9</td>
+        <td class="flag-warn">⚠ Wrong ratio, undersized</td>
+      </tr>
+      <tr>
+        <td>960 × 480px</td>
+        <td>2:1</td>
+        <td class="flag-warn">⚠ Wrong ratio, undersized</td>
+      </tr>
+      <tr>
+        <td>1038 × 317px</td>
+        <td>~3.27:1</td>
+        <td class="flag-warn">⚠ Severely undersized and wrong ratio — barely taller than the container at desktop. Focal point has almost no vertical room. Will look poor at all breakpoints.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 16px;">The inconsistency means some articles are being served upscaled images (degraded quality) and some are using ratios that give the focal point tool almost no vertical content to work with. The 16:9 images in particular are only 450–480px tall — the component needs 352px of that at desktop, leaving just 100px of vertical margin for the focal point to operate within.</p>
+
+  <h2>Why 3:2 works better than 16:9 for this component</h2>
+
+  <p>Both ratios at 2000px wide produce images that get heavily cropped in the component — the container is always much wider than it is tall. The difference is in how much vertical room the source image provides for the crop to work with.</p>
+
+  <div class="aux">
+    <div class="aux-card">
+      <h3>16:9 at 2000px wide</h3>
+      <p>Source: 2000 × 1125px. At desktop the container is 352px tall — that's 31% of the source height. Only 773px of vertical content left over for focal point flexibility. Feels tight; subject placement in the image has to be very precise.</p>
+    </div>
+    <div class="aux-card">
+      <h3>3:2 at 2000px wide</h3>
+      <p>Source: 2000 × 1333px. At desktop the container is still 352px tall — now 26% of the source height. 981px of vertical content to work with. More margin for the focal point. Subjects placed in the upper-middle third of the frame survive all breakpoints reliably.</p>
+    </div>
+  </div>
+
+  <p>The taller source image does not change how much of it gets shown — the container dimensions are fixed. It changes how much room exists above and below the visible band, which directly determines how tolerant the image is of focal point settings and subject placement variation.</p>
+
+  <h2>The safe zone</h2>
+
+  <p>Given the crop windows at each breakpoint, the following zone in the source image is visible at all breakpoints simultaneously when the focal point is set to center:</p>
+
+  <div class="safe-zone-diagram" aria-label="Safe zone diagram for 2000×1333px source image">
+    <div class="sz-image-area">
+      <div class="sz-dim-label top">2000px wide</div>
+      <div class="sz-dim-label left">1333px tall</div>
+      <div class="sz-crop-desktop">
+        <span class="sz-crop-label desktop">Desktop crop band</span>
+      </div>
+      <div class="sz-crop-mobile">
+        <span class="sz-crop-label mobile">Mobile crop region</span>
+      </div>
+      <div class="sz-safe-zone">
+        <span class="sz-safe-label">Safe zone</span>
+      </div>
+      <div class="sz-focal"></div>
+    </div>
+  </div>
+
+  <p>The desktop crop is a wide shallow band across the middle of the image. The mobile crop is a more compact region around the focal point. The safe zone is the overlap — the area where subject placement survives both crop shapes.</p>
+
+  <div class="rule-block">
+    <strong>Safe zone in practical terms</strong>
+    <p>Keep essential content — faces, key action, primary subject — within the <strong>center 60% of the frame width</strong> and between <strong>20% and 65% from the top of the frame</strong>. Anything outside this zone risks being cropped at one or more breakpoints, regardless of how the focal point is set.</p>
+  </div>
+
+  <h2>Creative brief — recommended spec</h2>
+
+  <div class="spec-box">
+    <h3>Editorial Hero — Image specification</h3>
+    <div class="spec-row">
+      <span class="spec-label">Dimensions</span>
+      <span class="spec-value"><strong>2000 × 1333px</strong> (3:2 ratio)</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-label">File format</span>
+      <span class="spec-value">JPEG, sRGB, 80–85% quality. PNG for illustrations or images with transparency.</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-label">Safe zone</span>
+      <span class="spec-value">Center 60% of frame width · Between 20% and 65% from top of frame. Primary subject must be within this zone.</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-label">Vertical placement</span>
+      <span class="spec-value">Place faces and key action in the <strong>upper-middle third</strong> of the frame — roughly 25–50% from the top. Avoid placing the primary subject in the bottom third; it will be cropped at desktop and tablet.</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-label">Horizontal composition</span>
+      <span class="spec-value">Centered or slightly off-center. The CMS focal point handles left/right crop adjustment, so horizontal composition is the most flexible axis — but extremes (subject pushed hard to one edge) should still be avoided.</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-label">What to avoid</span>
+      <span class="spec-value">Subject in the bottom third of frame · Tight head crops with no surrounding space · Very dark or very light edges that will look abrupt when cropped · Text or logos embedded in the image (they will be cropped unpredictably)</span>
+    </div>
+  </div>
+
+  <h2>Why this spec works</h2>
+
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">📐</div>
+      <div class="challenge-text">
+        <strong>3:2 gives more vertical room than 16:9 at the same width</strong>
+        At 2000px wide, a 3:2 source is 1333px tall versus 1125px for 16:9. The component only ever shows 232–352px of that height — the extra 208px of vertical content in the 3:2 source directly increases the focal point's operating margin. The content admin has more room to set a focal point that works across breakpoints without making a compromised choice.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">📐</div>
+      <div class="challenge-text">
+        <strong>2000px wide ensures no upscaling at any breakpoint</strong>
+        The widest the image container gets is 1154px at 1730px viewport. A 2000px source image always has resolution to spare — it will only ever be scaled down, never up. Smaller sources (800px, 853px) currently in use are being upscaled and will show quality degradation at large viewports.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">📐</div>
+      <div class="challenge-text">
+        <strong>Upper-middle subject placement survives all crop shapes</strong>
+        The desktop crop takes a horizontal band from roughly the middle of the image. The mobile crop is more compact but still centered on the focal point. Placing the subject at 25–50% from the top means it sits within the desktop crop band and remains within reach of the mobile focal point — without the content admin needing to make a breakpoint-specific adjustment.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">📐</div>
+      <div class="challenge-text">
+        <strong>One spec covers the whole library</strong>
+        The current library has seven different size/ratio combinations. Standardising on 2000 × 1333px (3:2) gives the CMS focal point tool consistent inputs to work with across every article — predictable crop behaviour, consistent quality, and no edge cases where the image is too shallow to crop usefully.
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Existing image library — remediation</h2>
+
+  <p>The images currently in use do not need to be replaced immediately, but the following are worth flagging for the next content refresh cycle:</p>
+
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>1038 × 317px image — replace as a priority</strong>
+        This image is 317px tall. The desktop container needs 352px. Cover is upscaling the image beyond its natural height, and the focal point has essentially no vertical room. This will look noticeably poor at all breakpoints. Replace with a 2000 × 1333px source.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>16:9 and 2:1 images — replace on next update</strong>
+        The 800×450, 853×480, and 960×480 images are undersized and wrong ratio. They will upscale at desktop and the shallow vertical gives the focal point tool very little to work with. Not urgent but worth replacing when those articles are next touched.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>800 × 533px (3:2, correct ratio) — acceptable short term</strong>
+        Right ratio, wrong size. Will upscale modestly at desktop (800px → 1154px container). Quality degradation will be visible at 1730px. Replace with 2000px source when the article is next updated.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Editorial Hero Image Sizing</span>
+  <span class="tag">v1.2</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!-- version: 1.0 | updated: 2026-06-03 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary — June 3, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Session Summary</h1>
+    <div class="subtitle">June 3, 2026 — Editorial Hero Image Sizing + Figma Write Testing</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This is a methodology and process session summary — it records what was changed, tested, and decided during a development session. It is not an audit handoff document. Do not use it to resume an audit. If you are resuming an audit, paste the plain-text audit handoff block generated at the end of your last audit conversation instead.</p>
+  </div>
+
+  <h2>Session Goals</h2>
+  <ul>
+    <li>Evaluate whether the selected 16x9 Figma frames accurately reflect live site image sizing and cropping behavior</li>
+    <li>Identify any discrepancies between Figma implementation and live site behavior</li>
+    <li>Update the Editorial Hero image sizing documentation to reflect findings</li>
+  </ul>
+
+  <h2>Investigation Completed This Session</h2>
+
+  <h3>Figma frames evaluated</h3>
+  <p>Seven Editorial Hero frames ending in "16x9" were evaluated across all breakpoints: 1730px, 1184px, 992px, 991px, 600px, 599px, and 352px. Design context was extracted from each frame and compared against live site extraction at matching breakpoints.</p>
+
+  <h3>Key findings</h3>
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Container dimensions confirmed matching</strong>
+        Image container dimensions in the Figma frames match the live site measurements documented in the editorial-hero-image-brief at all breakpoints within the measurement range. The known height delta at 991px and 600px (341px live vs 352px Figma) was confirmed.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Cropping behavior confirmed equivalent — with one exception</strong>
+        The Figma frames use <code>object-fit: cover</code> inside an aspect-ratio wrapper. The live site uses <code>background-size: cover</code> on a div. Both produce identical cropping behavior at desktop and mobile breakpoints where the container is wider than the source image ratio.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✕</div>
+      <div class="challenge-text">
+        <strong>Figma 600px frame does not match live site behavior</strong>
+        At 600px, the container ratio (1.52:1) is taller than the source image ratio (3:2 = 1.5:1). On the live site, <code>background-size: cover</code> scales the image up to fill the height, cropping the sides. In the Figma frame, the aspect-ratio wrapper constrains the image to its natural 16:9 proportions — the image cannot fill the container height, and the <code>#81A9E5</code> background is exposed above and below the image. This is a Figma implementation artifact, not a representation of live site behavior.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Crop axis behavior understood and documented</strong>
+        At all desktop and mobile breakpoints the container is wider than the source image ratio — the image scales to fill width and the top/bottom crop. At 600px the container is proportionally taller than the source image ratio — the image scales to fill height and the sides crop. This is the only breakpoint where horizontal content is more aggressively cropped than vertical content.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Structural difference between Figma and live site confirmed as expected</strong>
+        The live site uses a <code>&lt;div&gt;</code> with <code>background-image</code> — no <code>&lt;img&gt;</code> element, no aspect-ratio wrapper. The Figma frames use <code>&lt;img&gt;</code> with <code>object-fit: cover</code> inside an aspect-ratio wrapper. This structural difference is expected and does not affect the accuracy of the Figma frames at breakpoints where the container is wider than the source ratio.
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Files Updated This Session</h2>
+
+  <h3>editorial-hero-image-brief.html — updated to v1.1</h3>
+  <ul>
+    <li>Crop table updated — new <strong>Crop axis</strong> column added. Each row now states whether the breakpoint is width-constrained (image scales to fill width, top/bottom crop) or height-constrained (image scales to fill height, sides crop).</li>
+    <li>600px row updated — crop axis noted as height-constrained with an explicit call-out that more horizontal content is lost at this breakpoint than any other.</li>
+  </ul>
+
+  <h2>Key Decisions and Findings</h2>
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Figma frames are an accurate representation of live site behavior — except at 600px</strong>
+        The statement "the Figma frames visually match what the live site would do with the same image and the same focal point" holds at all breakpoints except 600px, where the aspect-ratio wrapper in Figma prevents the fill-height scaling that the live site performs.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">
+        <strong>Crop axis column added to documentation for Claude's benefit</strong>
+        The crop axis (width-constrained vs height-constrained) was previously derivable only by comparing container ratio to source image ratio. It is now stated directly in the crop table, making breakpoint-specific extraction and safe zone decisions faster and more reliable.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>600px Figma frame — not updated this session</strong>
+        The 600px frame's aspect-ratio wrapper causes it to misrepresent live site behavior. Whether to update the Figma frame to reflect the correct fill-height behavior was not addressed this session.
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Current Project File Versions</h2>
+  <table>
+    <thead>
+      <tr><th>File</th><th>Version</th><th>Last updated</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>editorial-hero-image-brief.html</td><td>v1.1</td><td>2026-06-03</td></tr>
+      <tr><td>figma-write-procedure.html</td><td>v1.1</td><td>2026-06-03</td></tr>
+      <tr><td>session-context.html</td><td>v2.2</td><td>2026-06-03</td></tr>
+      <tr><td>ux_audit_methodology.html</td><td>v2.2</td><td>2026-05-08</td></tr>
+      <tr><td>designer-guide.html</td><td>v1.5</td><td>2026-05-11</td></tr>
+      <tr><td>module-audit-brief-form.html</td><td>v1.3</td><td>2026-05-08</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Open Items — Next Session</h2>
+  <div class="challenge-list">
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>600px Figma frame — consider updating</strong>
+        The aspect-ratio wrapper in the 600px frame causes it to expose background color rather than scale to fill height as the live site does. Decide whether to update the frame to match live site behavior.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Continue Figma write testing against a new target file</strong>
+        Carried from June 3 session handoff. Load kaplan-figma-write skill at session start before any use_figma call.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Scope the forms audit</strong>
+        Define what a forms audit covers: component types, states per component, properties per state. Button states are a priority starting point. Carried from May 13.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Observe correct breakpoint coverage pattern</strong>
+        Complete all breakpoints within each phase before moving to the next phase. Carried from May 11.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Future scope list — needs tightening</strong>
+        Consolidate future scope sub-items in the methodology doc. Carried from May 8.
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">
+        <strong>Figma isolated screenshot crop</strong>
+        Lower priority. Child node IDs needed for section-level crops. Carried from May 11.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Session Summary — June 3, 2026</span>
+  <span class="tag">v1.0</span>
+</footer>
+
+</body>
+</html>

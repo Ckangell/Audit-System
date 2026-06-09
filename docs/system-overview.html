@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!-- version: 1.0 | updated: 2026-06-08 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>System Overview</h1>
+    <div class="subtitle">A conceptual map of the audit system — what lives where, and how it changes</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This document is a one-page mental model of the audit system. It is not a process doc — for the audit process see the <a href="./ux_audit_methodology.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">UX Audit Methodology</a>; for how to run a session see the <a href="./designer-guide.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">Designer Guide</a>. The purpose here is to make visible the four layers the system actually runs on, what each layer holds, who maintains it, and how new findings flow between them.</p>
+  </div>
+
+  <h2>The four layers</h2>
+
+  <div style="margin: 24px 0;">
+    <svg width="100%" viewBox="0 0 680 540" xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 100%; height: auto;">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <text x="40" y="32" font-family="'Open Sans', sans-serif" font-size="14" font-weight="600" fill="#240F6E">Layer</text>
+      <text x="280" y="32" text-anchor="middle" font-family="'Open Sans', sans-serif" font-size="14" font-weight="600" fill="#240F6E">What it holds</text>
+      <text x="640" y="32" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="14" font-weight="600" fill="#240F6E">Updates</text>
+
+      <!-- Methodology layer -->
+      <rect x="40" y="50" width="600" height="92" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+      <text x="60" y="78" font-family="'Open Sans', sans-serif" font-size="14" font-weight="600" fill="#26215C">Methodology layer</text>
+      <text x="60" y="100" font-family="'Open Sans', sans-serif" font-size="12" fill="#3C3489">Phases, taxonomy, principles</text>
+      <text x="60" y="120" font-family="'Open Sans', sans-serif" font-size="12" fill="#3C3489">ux_audit_methodology · designer-guide · session-context</text>
+      <text x="620" y="120" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="12" fill="#3C3489">Rarely</text>
+
+      <!-- Operational layer -->
+      <rect x="40" y="162" width="600" height="92" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+      <text x="60" y="190" font-family="'Open Sans', sans-serif" font-size="14" font-weight="600" fill="#04342C">Operational layer</text>
+      <text x="60" y="212" font-family="'Open Sans', sans-serif" font-size="12" fill="#085041">Checkpoints, selectors, derivation rules</text>
+      <text x="60" y="232" font-family="'Open Sans', sans-serif" font-size="12" fill="#085041">kaplan-audit-extraction · kaplan-selector-registry</text>
+      <text x="620" y="232" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="12" fill="#085041">Often, in small increments</text>
+
+      <!-- Audit sessions -->
+      <rect x="40" y="274" width="600" height="92" rx="12" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+      <text x="60" y="302" font-family="'Open Sans', sans-serif" font-size="14" font-weight="600" fill="#412402">Audit sessions</text>
+      <text x="60" y="324" font-family="'Open Sans', sans-serif" font-size="12" fill="#633806">Designers run audits using the two layers above</text>
+      <text x="60" y="344" font-family="'Open Sans', sans-serif" font-size="12" fill="#633806">Audit handoff block carries state between sessions</text>
+      <text x="620" y="344" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="12" fill="#633806">Every session</text>
+
+      <!-- Maintenance loop -->
+      <rect x="40" y="386" width="600" height="92" rx="12" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+      <text x="60" y="414" font-family="'Open Sans', sans-serif" font-size="14" font-weight="600" fill="#4A1B0C">Maintenance loop</text>
+      <text x="60" y="436" font-family="'Open Sans', sans-serif" font-size="12" fill="#712B13">Claude proposes updates from session findings · you approve</text>
+      <text x="60" y="456" font-family="'Open Sans', sans-serif" font-size="12" fill="#712B13">Misses and discoveries flow up into the operational layer</text>
+      <text x="620" y="456" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="12" fill="#712B13">You, periodically</text>
+
+      <!-- Arrows -->
+      <line x1="100" y1="386" x2="100" y2="256" stroke="#993C1D" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <text x="110" y="332" font-family="'Open Sans', sans-serif" font-size="12" fill="#993C1D">proposes</text>
+
+      <line x1="580" y1="254" x2="580" y2="384" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <text x="570" y="332" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="12" fill="#0F6E56">runs surface</text>
+      <text x="570" y="348" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="12" fill="#0F6E56">findings</text>
+
+      <text x="340" y="510" text-anchor="middle" font-family="'Open Sans', sans-serif" font-size="12" font-style="italic" fill="#5F5E5A">You maintain the top two layers. Designers only touch the third.</text>
+    </svg>
+  </div>
+
+  <h2>What each layer does</h2>
+
+  <div class="rule-block">
+    <strong>Methodology layer</strong>
+    <p>The conceptual frame — phases, scope, structural divergence taxonomy, section naming convention, the rules of how an audit runs. Lives in <code>ux_audit_methodology.html</code>, <code>designer-guide.html</code>, and <code>session-context.html</code>. This layer changes rarely. When it does, the change is fundamental — a new phase, a new core principle, a redefinition of what the audit covers.</p>
+  </div>
+
+  <div class="rule-block">
+    <strong>Operational layer</strong>
+    <p>The working rule set — confirmed selectors per module, MUI extraction patterns, mandatory verification checkpoints, derivation protocols, viewport sequencing. Lives in the two skills: <code>kaplan-audit-extraction</code> and <code>kaplan-selector-registry</code>. This layer changes often, in small increments. A new checkpoint after a Phase 5 miss, a new selector entry after a non-obvious derivation, a refinement to an extraction function — each is a small update that compounds over time.</p>
+  </div>
+
+  <div class="rule-block">
+    <strong>Audit sessions</strong>
+    <p>Where the methodology and the rule set get used. Designers run audits as conversations in the Claude Project; state travels between conversations via the plain-text audit handoff block. The session layer consumes the two layers above and produces findings — passes, fails, deltas — for the module being audited.</p>
+  </div>
+
+  <div class="rule-block">
+    <strong>Maintenance loop</strong>
+    <p>How the system gets better. Findings from sessions — misclassifications surfaced, new selectors derived, DOM exploration calls that went wrong — flow back up into the operational layer as proposed updates. Claude drafts the updates; you approve, edit, or discard them. This is the mechanism that converts individual session experience into durable rules without requiring designers to maintain documentation themselves.</p>
+  </div>
+
+  <h2>Who maintains what</h2>
+
+  <p>Designers using the system only touch the audit session layer. They run audits, generate findings, hand off state between conversations. They do not edit skills, methodology docs, or the registry.</p>
+
+  <p>You — as system architect, with Claude — maintain the methodology and operational layers. The maintenance loop is the rhythm: session findings surface candidate updates, you and Claude work through them at the end of a session or in a dedicated maintenance pass, and approved changes land in the relevant skill or doc.</p>
+
+  <p>The split matters because it determines whether the system scales. If designers had to maintain the rule set, every new designer would be a maintenance burden. If the rule set is maintained centrally and consumed downstream, every new designer is pure throughput.</p>
+
+  <h2>How findings become rules</h2>
+
+  <p>The mechanism for the maintenance loop is the proposal-and-approval pattern. At the end of an audit session, Claude surfaces any moments that look like candidates for a new rule, checkpoint, or registry entry — a misclassification the designer corrected, a selector that needed unusual derivation, a DOM depth call that went wrong. Claude drafts the proposed update in the format the relevant skill or doc expects. You approve, edit, or discard.</p>
+
+  <p>This keeps the maintenance cost on the system architect, not the designers. They run audits; corrections they generate flow back through their session summaries or audit handoffs, which Claude reads and proposes updates from when you run a maintenance session.</p>
+
+  <p>Two principles hold:</p>
+
+  <ul>
+    <li>Claude proposes updates; humans approve them. Autonomous documentation drift is a failure mode — one designer's edge case becoming a rule that breaks the next three audits. The review gate is load-bearing.</li>
+    <li>The two upper layers update at different rhythms. The operational layer churns; the methodology layer holds steady. Keeping these separate means the operational layer can move quickly without destabilising the conceptual frame that designers depend on.</li>
+  </ul>
+
+  <h2>Why this matters for the agentic phase</h2>
+
+  <p>The agentic phase — Claude running more of the audit autonomously — depends on this layered structure being healthy. Autonomy at Phase 5 (delta versus fail classification) becomes safe only when the operational layer has enough checkpoints to catch the failure modes that currently require a designer in the loop. Autonomy at Phase 3 (extraction) becomes safe only when DOM exploration depth is encoded as explicit rules rather than implicit judgment.</p>
+
+  <p>In other words: the path to autonomy is not a separate build. It runs through the maintenance loop. Every miss that becomes a checkpoint, every non-obvious derivation that becomes a registry entry, is a step toward making the human gate optional rather than required.</p>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · System Overview</span>
+  <span class="tag">v1.0</span>
+</footer>
+
+</body>
+</html>

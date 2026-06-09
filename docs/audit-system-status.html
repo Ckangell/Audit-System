@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- version: 1.0 | updated: 2026-06-08 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit System Status</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/styles-v2.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="label">Kaplan / UX Design Systems</div>
+    <h1>Audit System Status</h1>
+    <div class="subtitle">One-page synthesis of where the system is and where it's going</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="value-block">
+    <p>This is the synthesis doc — a scannable read of evolution, current state, and what's next. Not a session log, not a methodology doc. For the conceptual map see the <a href="./system-overview.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">System Overview</a>; for the audit process see the <a href="./ux_audit_methodology.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">UX Audit Methodology</a>; for session-by-session detail see the session summaries in the sessions folder.</p>
+    <p>Updated when something material changes — not every session.</p>
+  </div>
+
+  <h2>Evolution</h2>
+
+  <div class="phase-list">
+    <div class="phase-list-item"><span class="phase-list-label">May 8</span> Six-phase methodology established; implementation delta taxonomy defined</div>
+    <div class="phase-list-item"><span class="phase-list-label">May 11</span> Two-skill architecture confirmed; viewport resize root cause identified and fixed</div>
+    <div class="phase-list-item"><span class="phase-list-label">May 13</span> Selector registry reframed as reference cache; MUI derivation protocol added</div>
+    <div class="phase-list-item"><span class="phase-list-label">May 14</span> Mandatory verification checkpoints added after Journey Module A misses</div>
+    <div class="phase-list-item"><span class="phase-list-label">Jun 8</span> System Overview doc created; four-layer model formalised</div>
+  </div>
+
+  <h2>Current Status</h2>
+
+  <div class="challenge-list">
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">Six-phase methodology operational</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">Two skills load automatically per session — kaplan-audit-extraction and kaplan-selector-registry</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">Three modules audited — Journey A, Journey B, Footer</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">✅</div>
+      <div class="challenge-text">Audit handoff block pattern established for session-to-session continuity</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">Forms audit scope confirmed across three sites — not yet started</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">🔲</div>
+      <div class="challenge-text">Shared Claude Project architecture for designer deployment defined but not yet implemented</div>
+    </div>
+  </div>
+
+  <h2>Upcoming</h2>
+
+  <div class="challenge-list">
+    <div class="challenge">
+      <div class="challenge-icon">→</div>
+      <div class="challenge-text"><strong>Forms audit</strong> — next active audit; button states are the priority starting point</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">→</div>
+      <div class="challenge-text"><strong>Agentic phase planning</strong> — dedicated session needed to scope supervisor, autonomy targets per phase, and human gates</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">→</div>
+      <div class="challenge-text"><strong>Maintenance loop formalisation</strong> — concrete process for the proposal-and-approval pattern that feeds findings back into skills</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">→</div>
+      <div class="challenge-text"><strong>DOM exploration depth rules</strong> — currently implicit; needs to be explicit before Phase 3 autonomy</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-icon">→</div>
+      <div class="challenge-text"><strong>352px breakpoint extraction</strong> — browser minimum window width prevents resize below 500px; resolution path TBD</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Kaplan UX · Audit System Status</span>
+  <span class="tag">v1.0</span>
+</footer>
+
+</body>
+</html>
