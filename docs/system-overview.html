@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- version: 1.0 | updated: 2026-06-08 -->
+<!-- version: 1.1 | updated: 2026-06-15 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -64,7 +64,7 @@
       <text x="60" y="414" font-family="'Open Sans', sans-serif" font-size="14" font-weight="600" fill="#4A1B0C">Maintenance loop</text>
       <text x="60" y="436" font-family="'Open Sans', sans-serif" font-size="12" fill="#712B13">Claude proposes updates from session findings · you approve</text>
       <text x="60" y="456" font-family="'Open Sans', sans-serif" font-size="12" fill="#712B13">Misses and discoveries flow up into the operational layer</text>
-      <text x="620" y="456" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="12" fill="#712B13">You, periodically</text>
+      <text x="620" y="456" text-anchor="end" font-family="'Open Sans', sans-serif" font-size="12" fill="#712B13">You, at Phase 6</text>
 
       <!-- Arrows -->
       <line x1="100" y1="386" x2="100" y2="256" stroke="#993C1D" stroke-width="1.5" marker-end="url(#arrow)"/>
@@ -104,7 +104,7 @@
 
   <p>Designers using the system only touch the audit session layer. They run audits, generate findings, hand off state between conversations. They do not edit skills, methodology docs, or the registry.</p>
 
-  <p>You — as system architect, with Claude — maintain the methodology and operational layers. The maintenance loop is the rhythm: session findings surface candidate updates, you and Claude work through them at the end of a session or in a dedicated maintenance pass, and approved changes land in the relevant skill or doc.</p>
+  <p>You — as system architect, with Claude — maintain the methodology and operational layers. The maintenance loop is the rhythm: corrections surfaced during Phase 6 review become candidate updates, you and Claude work through them as they come back, and approved changes land in the relevant skill or doc.</p>
 
   <p>The split matters because it determines whether the system scales. If designers had to maintain the rule set, every new designer would be a maintenance burden. If the rule set is maintained centrally and consumed downstream, every new designer is pure throughput.</p>
 
@@ -112,7 +112,7 @@
 
   <p>The mechanism for the maintenance loop is the proposal-and-approval pattern. At the end of an audit session, Claude surfaces any moments that look like candidates for a new rule, checkpoint, or registry entry — a misclassification the designer corrected, a selector that needed unusual derivation, a DOM depth call that went wrong. Claude drafts the proposed update in the format the relevant skill or doc expects. You approve, edit, or discard.</p>
 
-  <p>This keeps the maintenance cost on the system architect, not the designers. They run audits; corrections they generate flow back through their session summaries or audit handoffs, which Claude reads and proposes updates from when you run a maintenance session.</p>
+  <p>This keeps the maintenance cost on the system architect, not the designers. The trigger is Phase 6 review: as you check the annotation references against the live site and correct any errors, each correction comes back into the conversation. Claude classifies it as a slip (no rule) or a pattern (rule-worthy), and proposes a rule for the patterns. You approve, edit, or discard.</p>
 
   <p>Two principles hold:</p>
 
@@ -131,7 +131,7 @@
 
 <footer>
   <span>Kaplan UX · System Overview</span>
-  <span class="tag">v1.0</span>
+  <span class="tag">v1.1</span>
 </footer>
 
 </body>

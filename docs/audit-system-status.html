@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- version: 1.0 | updated: 2026-06-08 -->
+<!-- version: 1.1 | updated: 2026-06-15 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -21,7 +21,7 @@
 <div class="wrap">
 
   <div class="value-block">
-    <p>This is the synthesis doc — a scannable read of evolution, current state, and what's next. Not a session log, not a methodology doc. For the conceptual map see the <a href="./system-overview.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">System Overview</a>; for the audit process see the <a href="./ux_audit_methodology.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">UX Audit Methodology</a>; for session-by-session detail see the session summaries in the sessions folder.</p>
+    <p>This is the synthesis doc — a scannable read of evolution, current state, and what's next, and the single ongoing record of the system. Not a session log, not a methodology doc. For the conceptual map see the <a href="./system-overview.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">System Overview</a>; for the audit process see the <a href="./ux-audit-methodology.html" style="color: #5c4bff; text-decoration: none; font-weight: 600;">UX Audit Methodology</a>.</p>
     <p>Updated when something material changes — not every session.</p>
   </div>
 
@@ -33,6 +33,7 @@
     <div class="phase-list-item"><span class="phase-list-label">May 13</span> Selector registry reframed as reference cache; MUI derivation protocol added</div>
     <div class="phase-list-item"><span class="phase-list-label">May 14</span> Mandatory verification checkpoints added after Journey Module A misses</div>
     <div class="phase-list-item"><span class="phase-list-label">Jun 8</span> System Overview doc created; four-layer model formalised</div>
+    <div class="phase-list-item"><span class="phase-list-label">Jun 15</span> Three session types formalised (audit, exploratory, documentation); maintenance loop defined at Phase 6; per-session summaries retired</div>
   </div>
 
   <h2>Current Status</h2>
@@ -56,10 +57,6 @@
     </div>
     <div class="challenge">
       <div class="challenge-icon">🔲</div>
-      <div class="challenge-text">Forms audit scope confirmed across three sites — not yet started</div>
-    </div>
-    <div class="challenge">
-      <div class="challenge-icon">🔲</div>
       <div class="challenge-text">Shared Claude Project architecture for designer deployment defined but not yet implemented</div>
     </div>
   </div>
@@ -69,7 +66,7 @@
   <div class="challenge-list">
     <div class="challenge">
       <div class="challenge-icon">→</div>
-      <div class="challenge-text"><strong>Forms audit</strong> — next active audit; button states are the priority starting point</div>
+      <div class="challenge-text"><strong>Interactive states</strong> — button and field states (hover, focus, active, disabled); needs an extraction approach defined first, in an exploratory session</div>
     </div>
     <div class="challenge">
       <div class="challenge-icon">→</div>
@@ -77,11 +74,11 @@
     </div>
     <div class="challenge">
       <div class="challenge-icon">→</div>
-      <div class="challenge-text"><strong>Maintenance loop formalisation</strong> — concrete process for the proposal-and-approval pattern that feeds findings back into skills</div>
+      <div class="challenge-text"><strong>DOM exploration depth rules</strong> — currently implicit; needs to be explicit before Phase 3 autonomy</div>
     </div>
     <div class="challenge">
       <div class="challenge-icon">→</div>
-      <div class="challenge-text"><strong>DOM exploration depth rules</strong> — currently implicit; needs to be explicit before Phase 3 autonomy</div>
+      <div class="challenge-text"><strong>Top-level tab navigation</strong> — pinned tab bar across hub-level pages (Hub, Dashboard, Kaplan-Projects, Development Plan); within-Kaplan nav a later piece</div>
     </div>
     <div class="challenge">
       <div class="challenge-icon">→</div>
@@ -93,7 +90,7 @@
 
 <footer>
   <span>Kaplan UX · Audit System Status</span>
-  <span class="tag">v1.0</span>
+  <span class="tag">v1.1</span>
 </footer>
 
 </body>
