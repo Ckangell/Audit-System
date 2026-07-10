@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Audit Session Context</title>
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./styles/styles-v2.css">
+<link rel="stylesheet" href="../styles/styles-v2.css">
 </head>
 <body>
 
@@ -260,7 +260,7 @@ Note:      [explanation — why this is considered equivalent]</pre>
 
     <p>The maintenance loop is how session experience becomes durable rules. It runs at Phase 6 review: after annotation references are handed over, the designer pastes them into Figma and checks each against the live site. When the designer finds an error and brings it back into the conversation, that correction is the trigger.</p>
 
-    <p>This is the only mechanism by which rules enter the skills. Claude proposes; the designer approves. Claude never writes to a skill autonomously — the review gate is load-bearing.</p>
+    <p>This is the only mechanism by which rules enter the skills. Claude proposes each update in two forms: a short plain-language summary of what would change and why — no selectors, no code — and the full technical version that would actually be written. The designer reviews and approves the plain-language summary. Once approved, Claude writes the update directly into the relevant skill file. The review happens before the write, not after — the designer's approval is what makes the change, not Claude's placement of it.</p>
 
     <div class="rule-block">
       <strong>Two destinations, kept separate</strong>
@@ -288,7 +288,7 @@ Note:      [explanation — why this is considered equivalent]</pre>
       <pre>Rule:      [the checkpoint or registry entry, one line]
 Lands in:  [kaplan-audit-extraction | kaplan-selector-registry | session context]
 Why:       [slip-or-pattern reasoning, a few words]</pre>
-      <p>Expand beyond three lines only when the call is genuinely ambiguous — e.g. a misclassification that could be either a checkpoint or a reference case, or where the correct skill is not obvious. The version that lands in the skill is thorough; the version shown to the designer is brief. Write rich for the skill, brief for the designer.</p>
+      <p>Expand beyond three lines only when the call is genuinely ambiguous — e.g. a misclassification that could be either a checkpoint or a reference case, or where the correct skill is not obvious. The version that lands in the skill is thorough; the version shown to the designer is brief. Write rich for the skill, brief for the designer. Once the designer approves the brief version, write the full version directly into the file named in "Lands in" — approval happens on the brief summary; the file write follows automatically.</p>
     </div>
 
     <div class="rule-block">
